@@ -4,12 +4,6 @@ author: "U1141"
 date: "2023-12-07"
 output: html_document
 ---
----
-title: "MDD_Single_Modality"
-author: "U1141"
-date: "2023-12-06"
-output: html_document
----
 # MDD_Single_Modality
 Case-Control single omics analysis for DNAm, mRNA and miRNA.
 
