@@ -249,9 +249,6 @@ best_DU
 ```
 ## Heatmap
 
-
-RRHO2_heatmap <- function(RRHO_obj, maximum=NULL, minimum=NULL, colorGradient=NULL, labels=NULL, ...)
-
 ```{r }
 maximum <- max(hypermat,na.rm=TRUE)
 minimum <- min(hypermat,na.rm=TRUE)
