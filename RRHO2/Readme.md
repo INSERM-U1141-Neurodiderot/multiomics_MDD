@@ -4,7 +4,7 @@ author: "U1141"
 date: "2023-12-07"
 output: html_document
 ---
-
+We used the improved version of RRHO (https://rdrr.io/github/RRHO2/RRHO2/f/README.md).
 # Rank-rank hypergeometric overlap (RRHO) analysis
 ```{r cars}
 library(dplyr)
