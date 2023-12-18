@@ -21,7 +21,7 @@ We also provided the processed data and covariates used as input:
 
 ## 2- RRHO2
 
-
+We implemented **RRHO2par** a parallelized version of **RRHO2** ([Cahill et al. 2018](https://doi.org/10.1038/s41598-018-27903-2)).
 
 ## 3- Multiomic workflow
 
