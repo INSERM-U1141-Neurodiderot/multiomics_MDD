@@ -3,7 +3,6 @@
 
 We implemented a parallelized version of **RRHO2** ([Cahill et al. 2018](https://doi.org/10.1038/s41598-018-27903-2)). In RRHO2par the native **RRHO2** function *numericListOverlap* was modified for parallelisation using the *mcmapply* function of the **parallel** R package.
 
-# Rank-rank hypergeometric overlap (RRHO) analysis
 ```{r cars}
 library(dplyr)
 require(parallel)
