@@ -3,6 +3,10 @@ require(parallel)
 require(VennDiagram)
 require(RRHO)
 
+#######
+# In RRHO2par the native RRHO2 function *numericListOverlap* was modified for parallelisation using the *mcmapply* function of the *parallel* R package. 
+#######
+
 ## Compute the overlaps between two *numeric* lists:
 numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", tol = 0.5, offset = 1 , mcores = ncores){
   n<- length(sample1)
@@ -37,10 +41,10 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", tol = 
   
   indexes<- expand.grid(i=seq(1,n,by=stepsize), j=seq(1,n,by=stepsize))
   if(method=="hyper"){
-    #overlaps<- apply(indexes, 1, function(x) overlap_hyper(x['i'], x['j']))
+    ####overlaps<- apply(indexes, 1, function(x) overlap_hyper(x['i'], x['j']))
     overlaps<- parallel::mcmapply(overlap_hyper , a = indexes[ ,1] , b = indexes[ ,2] , mc.cores = mcores)
   } else if(method=="fisher"){
-    #overlaps<- apply(indexes, 1, function(x) overlap_fisher(x['i'], x['j']))
+    ####overlaps<- apply(indexes, 1, function(x) overlap_fisher(x['i'], x['j']))
     overlaps<- parallel::mcmapply(overlap_fisher , a = indexes[ ,1] , b = indexes[ ,2] , mc.cores = mcores)
   }
   
@@ -52,6 +56,11 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", tol = 
   return(list(counts=matrix.counts, log.pval=matrix.log.pvals, signs = matrix.signs))
 }
 
+#############
+# RRHO2 functions from the RRHO2 R package 
+# https://github.com/RRHO2/RRHO2/tree/master
+# Cahill et al. 2018 https://doi.org/10.1038/s41598-018-27903-2
+#############
 
 RRHO2_initialize <- function (list1, list2, labels = NULL, log10.ind = FALSE, multipleTesting="none", boundary = 0.1)
 {
