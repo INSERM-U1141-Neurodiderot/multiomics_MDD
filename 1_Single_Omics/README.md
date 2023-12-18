@@ -1,13 +1,8 @@
----
-title: "MDD Single Modality analyse"
-author: "U1141"
-date: "2023-12-07"
-output: html_document
----
-# MDD_Single_Modality
+
+# Single omics analyses
 Case-Control single omics analysis for DNAm, mRNA and miRNA.
 
-# DNAm
+## DNAm
 
 ```{r cars}
 library(sva)
@@ -135,7 +130,7 @@ dim(dmp_female_sig)
 dim(dmp_male_sig)
 ```
 
-# mRNA
+## mRNA
 ```{r cars}
 library(variancePartition)
 library(DESeq2)
@@ -199,7 +194,7 @@ dim(DEG_male)
 dim(DEG_female)
 ```
 
-# miRNA
+## miRNA
 ```{r cars}
 library(variancePartition)
 library(DESeq2)
