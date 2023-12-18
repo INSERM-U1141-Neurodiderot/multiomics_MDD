@@ -124,6 +124,8 @@ dmp_male = champ.DMP(beta = male, pheno = pd_mdd_bin[pd_mdd_bin$Sex == 'M', 'Sam
                      compare.group = c("control", "mdd"), adjPVal = 1,
                      adjust.method = "BH", arraytype = "EPIC")
 dmp_male = as.data.frame(dmp_male$control_to_mdd)
+
+saveRDS(list(dmp_male = dmp_male, dmp_female = dmp_female), 'res_single_DNAm.rds')
 ```
 Significant DMP (p-value < 0.05)
 ```{r cars}
@@ -186,6 +188,8 @@ Analys_diff = function (data, covariates) {
 
 analys_diff_Male = Analys_diff(data = Male_filter, covariates = cov.Male)
 analys_diff_Female = Analys_diff(Female_filter, cov.Female)
+
+saveRDS(list(diff_male = analys_diff_Male, diff_female = analys_diff_Female), 'res_single_mRNA.rds')
 ```
 Significant differentialy expressed genes (DEG)
 ```{r cars}
@@ -299,6 +303,8 @@ analyse_mir = function(data, cov){
 }
 res_female = analyse_mir(raw.miRNA.female, cov_female)
 res_male = analyse_mir(raw.miRNA.male, cov_male)
+
+saveRDS(list(miR_male = res_male, miR_female = res_female), 'res_single_miRNA.rds')
 ```
 Significant miRNA
 ```{r cars}
