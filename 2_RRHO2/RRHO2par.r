@@ -4,7 +4,7 @@ require(VennDiagram)
 require(RRHO)
 
 #######
-# In RRHO2par the native RRHO2 function *numericListOverlap* was modified for parallelisation using the *mcmapply* function of the *parallel* R package. 
+# In RRHO2par the native RRHO2 function *numericListOverlap* was modified for parallelisation using the *mcmapply* function of the parallel R package. 
 #######
 
 ## Compute the overlaps between two *numeric* lists:
