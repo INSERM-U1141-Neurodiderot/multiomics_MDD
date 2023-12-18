@@ -13,11 +13,11 @@ The repository is divided into three main parts:
 We first identified DMPs, DEmiRNAs and DEGs between MDD cases and controls. The code is presented in the [README.md](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/README.md) Jupyter Notebook listing R packages and fonctions used. 
 
 We also provided the processed data and covariates used as input:
-- [data_DNAm.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds)
-- LeucocyteFraction.mdd.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/LeucocyteFraction.mdd.RDS)
-- [data.mRNA.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds)
-- [miR.MDD.raw.renamed.counts.csv)](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/miR.MDD.raw.renamed.counts.csv)
-- [covMIRNA.mDD.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/covMIRNA.mDD.RDS)
+- DNAm processed data [data_DNAm.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds)
+- DNAm covariates [LeucocyteFraction.mdd.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/LeucocyteFraction.mdd.RDS)
+- mRNA processed data [data.mRNA.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds)
+- miRNA covariates [miR.MDD.raw.renamed.counts.csv)](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/miR.MDD.raw.renamed.counts.csv)
+- miRNA processed data [covMIRNA.mDD.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/covMIRNA.mDD.RDS)
 
 ## 2- RRHO2
 
