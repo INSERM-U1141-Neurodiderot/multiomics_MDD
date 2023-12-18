@@ -12,7 +12,7 @@ require(RRHO)
 
 For each omic, results from differential analysis in each sex were ranked based on the following metric:  
 
-  -log10(p-value) x sign(log2 Fold Change)  
+     -log10(p-value) x sign(log2 Fold Change)  
 
 Then, **RRHO2par** was applied to the 2 lists at default parameters (with step size equal to the square root of the list length)
 
