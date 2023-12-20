@@ -10,7 +10,7 @@ The repository is divided into three main parts:
 
 ## 1- Single omics
 
-We first identified DMPs, DEmiRNAs and DEGs between MDD cases and controls. The code is presented in the [README.md](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/README.md) Jupyter Notebook listing R packages and fonctions used. 
+We first identified DMPs, DEmiRNAs and DEGs between MDD cases and controls. The code is presented in the [1_Single_Omics/README.md](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/README.md) Jupyter Notebook listing R packages and fonctions used. 
 
 We also provided the processed data and covariates used as input:
 - DNAm processed data ([data_DNAm.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds))
@@ -21,7 +21,7 @@ We also provided the processed data and covariates used as input:
 
 ## 2- RRHO2
 
-We implemented **RRHO2par** a parallelized version of **RRHO2** ([Cahill et al. 2018](https://doi.org/10.1038/s41598-018-27903-2)).
+We implemented **RRHO2par** a parallelized version of **RRHO2** ([Cahill et al. 2018](https://doi.org/10.1038/s41598-018-27903-2)). The code is presented in the [2_RRHO2/README.md](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/2_RRHO2/README.md) 
 
 ## 3- Multiomic workflow
 
