@@ -1,4 +1,3 @@
-setwd('D:/CC/Scripts/R/gitHub_MDD/multi_omics')
 # A la fin: session info
 
 library(omicade4)
