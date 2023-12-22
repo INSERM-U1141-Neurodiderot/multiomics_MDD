@@ -1,20 +1,3 @@
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
-#########################
 np = import("numpy")
 CombatModel = import("neurocombat_sklearn")
 neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , Train , Test) {
@@ -469,7 +452,7 @@ generate_omics_dataset = function (omics , dat_list , x) {
   
   return(omics_datasets)
 }
-df_top_features =  list.files(path= "01_Results/CV_train_results", 
+df_top_features =  list.files(path= "results/CV_train_results", 
                               pattern=".RDS",
                               recursive = TRUE,
                               all.files=TRUE,
@@ -485,7 +468,7 @@ for (i in 1:length(df_top_features)) {
 }
 
 
-df_to_names =  list.files(path= "01_Results/CV_train_results", 
+df_to_names =  list.files(path= "results/CV_train_results", 
                           pattern=".RDS",
                           recursive = TRUE,
                           all.files=TRUE,
