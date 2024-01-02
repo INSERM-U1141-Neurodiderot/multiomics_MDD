@@ -7,7 +7,7 @@ This repository houses the code used in our study of multiomic peripheral blood 
 The repository **multiomics_MDD** is divided into three main parts: 
 - [1- Single omics](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/1_Single_Omics)
 - [2- RRHO2](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/2_RRHO2)
-- [3- Multiomic workflow](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/)
+- [3- Multiomic workflow](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics)
 
 ## 1- Single omics
 
