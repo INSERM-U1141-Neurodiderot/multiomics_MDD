@@ -260,7 +260,7 @@ gen_omic_n = function (features_w , best_fact , o , omics , frac = 0.01) {
       return(omics[[ o]][, feat_n] )
   }
 }
-fracts = list (miRNA = 0.01 , mRNA = 0.1 , DNAm =  0.1)
+fracts = list (miRNA = 0.1 , mRNA = 0.1 , DNAm =  0.1)
 om = list (miRNA =  "miRNA" , mRNA =  "mRNA" , DNAm = "DNAm")
 
 data_intNMF = mapply ( function (x , y) {  gen_omic_n (features_w_intNMF , compos_best$compo_intNMF [[x]] , x , omics = omics , frac = y )}  , om , fracts  )
