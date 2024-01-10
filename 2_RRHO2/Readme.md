@@ -287,6 +287,4 @@ invisible(hypermat)
 
 ```
 
-![mRNA](RRHO2_mRNA.jpg)
-
-<img src="RRHO2_mRNA.jpg" width="1500" height="1000">
+<img align="center" src="RRHO2_mRNA.jpg" width="750" height="500">
