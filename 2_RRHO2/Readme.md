@@ -289,4 +289,4 @@ invisible(hypermat)
 
 ![mRNA](RRHO2_mRNA.jpg)
 
-<img src="RRHO2_mRNA.jpg">
+<img src="RRHO2_mRNA.jpg" width="100" height="100">
