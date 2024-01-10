@@ -285,5 +285,6 @@ mtext('male',1,0.5)
 color.bar(colorGradient, min = minimum, max = maximum, nticks = 6, title = '-log10(P-value)')
 invisible(hypermat)
 
-![mRNA](multiomics_MDD/2_RRHO2/RRHO2_mRNA.jpg?raw=true)
 ```
+
+![mRNA](multiomics_MDD/2_RRHO2/RRHO2_mRNA.jpg?raw=true)
