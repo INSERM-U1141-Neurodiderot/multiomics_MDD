@@ -1,0 +1,174 @@
+shell.executable("/bin/bash")
+import re
+import os
+import itertools
+
+"""
+Author: A. Mokhtari
+Affiliation: INSERM_U1141
+Aim: A Snakemake workflow for momix integration
+Date:   2023
+Run: snakemake --cluster-config cluster_config.yaml --snakefile Snakefile --jobs 2  --cluster "sbatch --verbose   --time={cluster.walltime}  --mem={cluster.mem_gb}G  --cpus-per-task={cluster.cpus}  --output={cluster.stdout}  --error={cluster.stderr}" --printshellcmds --latency-wait 60 --keep-going  --dryrun
+
+# Remove --dryrun to run
+Latest modification:
+
+"""
+
+#Modify configfile with local directories
+configfile: "configfile.yaml"
+
+workdir: config["WORKDIR"]
+
+
+
+#extract SET list (Female_MDD and Male_MDD)
+#and OMIC list (combinaisons of miRNA, mRNA, and DNAm)
+SET, OMIC = glob_wildcards( config ["WORKDIR"] + "01_Datasets/{set}_omic_{omic}.RDS" )
+
+#Extract METHODS list
+METHODS, = glob_wildcards( config ["WORKDIR"] + "02_Scripts/{methods}.R" )
+METHODS = list( set ( [re.sub(r'_[0-9]+', '', i) for i in METHODS] ) )
+
+
+#######################################################################################
+############################### Create result folders #################################
+#######################################################################################
+ODIR = []
+
+#for L in range(1, len( OMIC )+1):
+#    ODIR = ODIR + (["".join(a) for a in itertools.combinations( OMIC , L)])
+
+for S in SET:
+    for M in METHODS:
+        for O in OMIC:
+            os.makedirs ( os.path.join ( config["WORKDIR"] + "03_Results" ,S ,M ,O )  , exist_ok = True)
+
+
+# Rule all test 
+
+rule all:
+    input:
+        expand("/03_Results/{sets}/01_MCIA/{omic}/01_factorizations_mcia_dry.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/01_MCIA/{omic}/factors_mcia.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/02_MOFA/{omic}/02_MOFAobject_trained_dry.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/02_MOFA/{omic}/factors_s_mofa.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/03_IntNMF/{omic}/03_factorizations_intnmf_dry.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/04_JIVE/{omic}/04_factorizations_jive_dry.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/05_SCIKIT/{omic}/05_factorizations_scikit_dry.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/05_SCIKIT/{omic}/05_factorizations_scikit.RDS",sets=SET,omic=OMIC),
+        expand("/03_Results/{sets}/06_RGCCA/{omic}/06_factorizations_SGCCA_dry.RDS",sets=SET,omic=OMIC)
+
+#################################### Global Param #########################################
+NFACT = config["NFACT"]
+#################################### MOMIX ################################################ 
+
+
+rule mcia:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/01_MCIA/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/01_MCIA/{omic}/01_factorizations_mcia_dry.RDS",
+    fact="/03_Results/{sets}/01_MCIA/{omic}/factors_mcia.RDS"
+  message: "Applying 01_MCIA on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/01_MCIA.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+
+rule mofa:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    pydir=config["PYTHON"],
+    outdir="/03_Results/{sets}/02_MOFA/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/02_MOFA/{omic}/02_MOFAobject_trained_dry.RDS",
+    fact="/03_Results/{sets}/02_MOFA/{omic}/factors_s_mofa.RDS"
+  message: "Applying 02_MOFA on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/02_MOFA.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+rule intnmf:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/03_IntNMF/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/03_IntNMF/{omic}/03_factorizations_intnmf_dry.RDS"
+  message: "Applying 03_IntNMF on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/03_IntNMF.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+
+rule jive:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/04_JIVE/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/04_JIVE/{omic}/04_factorizations_jive_dry.RDS"
+  message: "Applying 04_JIVE on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/04_JIVE.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+
+rule scikit1:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/05_SCIKIT/{omic}/"
+  output:
+    omictxt="/03_Results/{sets}/05_SCIKIT/{omic}/scikit_MDD/omics1.txt"
+  message: "Extracting each of the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/05_SCIKIT_01.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+
+rule scikit2:
+  input:
+    txt= "/03_Results/{sets}/05_SCIKIT/{omic}/scikit_MDD/omics1.txt"
+  params:
+    nfact=NFACT,
+    omictxts="/03_Results/{sets}/05_SCIKIT/{omic}/scikit_MDD/",
+    outdir="/03_Results/{sets}/05_SCIKIT/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/05_SCIKIT/{omic}/scikit_MDD/projomics1.txt"
+  message: "Applying 05_SCIKIT on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "python 02_Scripts/scikit_fusion.py {params.outdir}/scikit_MDD/ {params.outdir}/scikit_MDD/  {params.nfact} ',' $(ls {params.omictxts}) " 
+
+rule scikit3:
+  input:
+    txt= "/03_Results/{sets}/05_SCIKIT/{omic}/scikit_MDD/projomics1.txt",
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/05_SCIKIT/{omic}/"
+  output:
+    fact_dry="/03_Results/{sets}/05_SCIKIT/{omic}/05_factorizations_scikit_dry.RDS",
+    fact="/03_Results/{sets}/05_SCIKIT/{omic}/05_factorizations_scikit.RDS"
+  message: "Applying 05_SCIKIT on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/05_SCIKIT_02.R --input {input.rds} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
+
+rule rgcca:
+  input:
+    rds= "01_Datasets/{sets}/{sets}_omic_{omic}.RDS"
+  params:
+    nfact=NFACT,
+    outdir="/03_Results/{sets}/06_RGCCA/{omic}/",
+    pathRgcca=config["PATHRGCCA"]
+  output:
+    fact_dry="/03_Results/{sets}/06_RGCCA/{omic}/06_factorizations_SGCCA_dry.RDS"
+  message: "Applying 06_RGCCA on the {wildcards.omic} omics of the {wildcards.sets} dataset."
+  shell: "Rscript  02_Scripts/06_RGCCA.R --input {input.rds} \
+    --pathRgcca {params.pathRgcca} \
+    --nfact {params.nfact}  \
+    --outputDir  {params.outdir}" 
