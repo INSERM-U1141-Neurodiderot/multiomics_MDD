@@ -29,7 +29,9 @@ Finally, with the goal of fully leveraging our genome-wide and multiomic data, w
 - Pre-processing and Cross-Validations : ([Cross_validation.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Cross_validation.R))
 - Feature selection with joint Dimension Reduction (jDR) methods ([Variable_selection.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Variable_selection.R))
 - Multiomic clustering with SNF: ([SNF_clustering.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/SNF_clustering.R))
-- Bootstrapping selecting stable features: ([Results.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Results.R))
+- Evaluation of the predicting performance for each combination of omic and cohort ([Results.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Results.R))
+- Bootstrapping procedure to extract stable selected features: Example for JIVE ([Jive_boost.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Jive_boost.R))
+
 
 ## Cite
 
