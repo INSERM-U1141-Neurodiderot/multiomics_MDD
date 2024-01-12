@@ -29,14 +29,20 @@ Finally, with the goal of fully leveraging our genome-wide and multiomic data, w
 
 .... à revoir :
 
-Pour l'instant l'ordre des script tel présenté ci-dessous n'est pas bon avec les scripts actuels, mais collerait avec la presentation dans le Mat&Met --> à adapter aux scripts finalisés
+La partie Snake ajoutée et commentée par Claire-Cécile pour l'instant ne représente qu'une toute petite partie du framework (Momix essentiellement) à retirer du github pour le papier
+
+Pour l'instant l'ordre des script tel que présenté ci-dessous n'est pas bon avec les scripts actuels, mais collerait avec la presentation dans le Mat&Met --> à adapter aux scripts finalisés
 
 Il y a du preproccessing et de la cross-validation dans le script SNFclustering.R --> à bouger ou unifier? 
 (embedded CV for SNF optimization ? normalement non) 
 
 Le script SNFclustering.R contient des ARI et nemo à supprimer? a priori on a besoin que des AUC et de SNF
 
-Pour présenter SNFclustering, si j'ai bien compris, Arnaud proposait de simplifier en montrant seulement un example pour une "split-itération" de CV dans une combinaison omic-cohort pour une jDR méthode (est-ce que ce serait faisable pour combinaison RNAseq miR DNAm JIVE female? le script de bootstrapping semble être JIVE)
+Pour présenter SNFclustering, si j'ai bien compris, Arnaud proposait de simplifier en montrant seulement un example pour une "split-itération" de CV dans une combinaison omic-cohort pour une jDR méthode (est-ce que ce serait faisable pour combinaison RNAseq miR DNAm JIVE female par ex?) 
+
+Le script de bootstrapping semble être pour JIVE. Est-ce que vous pourriez le vérifier et le commenter?
+
+Pour les fichiers de données de la partie multiomique du GitHub, ne garder que les inputs et outputs du script example? 
 
 - Pre-processing and Cross-Validations : ([Cross_validation.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Cross_validation.R))
 - Feature selection with joint Dimension Reduction (jDR) methods ([Variable_selection.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/Variable_selection.R))
