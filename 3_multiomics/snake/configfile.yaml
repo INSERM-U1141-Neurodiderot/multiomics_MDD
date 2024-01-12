@@ -1,0 +1,6 @@
+WORKDIR: 'current_working_directory'
+OMICS: ['miRNA', 'mRNA', 'DNAm']
+PYTHON: 'python directory'
+PATHRGCCA: 'RGCCA/'
+NFACT: 10
+
