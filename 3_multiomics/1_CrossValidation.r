@@ -8,6 +8,22 @@ cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
 cov_female = cov_pooled %>% dplyr::filter (SEX == "F" )
 cov_male = cov_pooled %>% dplyr::filter (SEX == "M" )
 
+cv_fold =list ()
+for (folds in c(1:5) ) {
+    cv = cov_pooled %>%
+          group_by(GROUP, SEX) %>% ### generates folds identicial in proportion in MDD vs Control and Male vs Female to the originanl dataset 
+          sample_frac(1) %>%
+          mutate(fold=rep(1:5, length.out=n())) %>%
+          ungroup
+    for (d in 1:5)
+        {cv_fold = append (cv_fold , list(list(train = cv %>% 
+                                                   filter (fold != d) %>% 
+                                                   .$Samp  , 
+                                               test = cv %>% 
+                                                   filter (fold == d) 
+                                                   %>% .$Samp ) ) ) }
+    }
+
 cv_fold_female =list ()
 for (folds in c(1:5) ) {
     cv = cov_female %>%
@@ -41,6 +57,7 @@ for (folds in c(1:5) ) {
                                                    %>% .$Samp ) ) ) }
     }
 
+saveRDS(cv_fold , file = "cv_fold.RDS") 
 saveRDS(cv_fold_female , file = "cv_fold_female.RDS") 
 saveRDS(cv_fold_male , file = "cv_fold_male.RDS") 
 
