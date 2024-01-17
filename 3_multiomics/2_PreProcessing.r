@@ -4,8 +4,6 @@ library(DESeq2)
 library(ChAMP)
 library(sva)
 
-setwd('D:/Downloads/multiomics')
-
 ### input: covariables
 cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
 
