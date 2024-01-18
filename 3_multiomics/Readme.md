@@ -11,7 +11,7 @@ For each train set (4/5 of samples), pre-processing, feature selection and clust
 For the test set (remaining 1/5), variables selected on the train set were extracted, pre-processed by applying the different models fitted on the train set and label propagation was used to transfer inferred clusters from the train to the test.
 For comparison, the same CV procedure was applied to features corresponding to differential analyses results (estimated on each train set separately) and to all features without selection.
 
-- [1- Single omics]([https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/1_Single_Omics](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/3_multiomics/1_CrossValidation.r))
+- [1- Single omics](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
 
 ### Pre-processing.
 Combat was used to adjust for covariates, with 2 modifications:
