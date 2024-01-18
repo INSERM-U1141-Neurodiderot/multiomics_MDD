@@ -12,7 +12,7 @@ For the test set (remaining 1/5), variables selected on the train set were extra
 For comparison, the same CV procedure was applied to features corresponding to differential analyses results (estimated on each train set separately) and to all features without selection.
 
 - [1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
-- Input: [cov_pooled.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data/cov_pooled.RDS)
+- Input: cov_pooled.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 - Output: cv_fold.rds, cv_fold_male.rds and cv_fold_female.rds in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
 
 ### Pre-processing.
