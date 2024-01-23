@@ -19,6 +19,7 @@ For comparison, the same CV procedure was applied to features corresponding to d
 
 Pre-processing was applied on each CV folds. In this repository, we provide example for the first folds of pooled, male and female.
 
+- [2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/2_PreProcessing.r)
 - General input: cov_pooled.rds, cv_fold.rds, cv_fold_female.rds and cv_fold_male.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 
 #### mRNA
@@ -48,15 +49,14 @@ Due to GitHub storage limitation, this frequence was lowed in the code provided
 ## 3 - Feature selection with Momix
 
 Building on the Momix benchmark, we encapsulated 6 joint Dimension Reduction (jDR) methods in a CV procedure: RGCCA, JIVE, MCIA, MOFA, intNMF and SciKit-Fusion in order to extract common variance between HDRS matrix scores (considered as a block) and every possible combination of either 1 (mRNA, miRNA, DNAm), 2 (mRNA/miRNA, mRNA/DNAm, miRNA/DNAm) or 3 (mRNA/miRNA/DNAm) omic blocks (7 possible combinations).
+
 For each jDR method and combination of blocks, a factor matrix representing the shared variance across blocks was derived with 10 factors extracted.
+
 Among these 10 factors, the one that correlated most (in absolute value) with MDD status was kept.
+
 Then weight vectors used to compute the best factor were retrieved. They represent the contribution of each feature to the factor to which they belong. Thus, for each modality, only the top 10%-ranking elements of weight vectors (in absolute value) were retained.
 
-MCIA
-MOFA use python
-JIVE
-RGCCA
-IntNMF
+Code was provided for MCIA, MOFA (use python), JIVE, RGCCA and IntNMF.
 
 
 
