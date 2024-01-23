@@ -56,16 +56,14 @@ Among these 10 factors, the one that correlated most (in absolute value) with MD
 
 Then weight vectors used to compute the best factor were retrieved. They represent the contribution of each feature to the factor to which they belong. Thus, for each modality, only the top 10%-ranking elements of weight vectors (in absolute value) were retained.
 
-Code was provided for MCIA, MOFA (use python), JIVE, RGCCA and IntNMF.
-
-- [3_FeatureSelection](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.r)
 - Input are covariables (cov_pooled) in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data), and pre-pocessed data of female fold 1 computed in the previous step (cv_DNAm_f_corr.rds, cv_miRNA_f_corr.rds, cv_mRNA_f_corr.rds) in [results/2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
-- Output: cv_fold.rds, cv_fold_male.rds and cv_fold_female.rds in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
+
+- Code was provided for MCIA, MOFA (use python), JIVE, RGCCA and IntNMF: [3_FeatureSelection](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.r). However, only JIVE features were actually computed here.
 
 
 
 
-
+# WORK IN PROGRESS
 
 ## 4 - Multiomic clustering with SNF
 To evaluate the ability of selected features to estimate meaningful clusters of subjects with regard to MDD status, we used SNF [19], an unsupervised integrative clustering technique. Several sets of SNF parameters were evaluated through CV (every possible combination between neighbors ∈ {10, 20, . . . , 50}, iters ∈ {10, 20, . . . , 60} and  ∈ {0.3, 0.4, . . . , 0.8}). Systematically, K=2 clusters were estimated through SNF and compared to the MDD status with the metric: Area Under the Curve (AUC; SNF provides probabilities of belonging to a cluster).  Then, cluster labels were transferred from the train to the test set using label propagation (implementation provided by SNF). This consists in an iterative propagation, to the test set, of labels defined during training, based on a measure of similarity between samples (see Supplementary Material). The set of parameters leading to the highest AUC averaged across all test sets was kept.
