@@ -26,13 +26,13 @@ Pre-processing was applied on each CV folds. In this repository, we provide exam
 mRNA pre-processing used DESeq2 library.
 
 - Input: data_mRNA.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
-- Output: cv_mRNA_corr.RDS, cv_mRNA_f_corr.RDS, and cv_mRNA_m_corr.RDS.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
+- Output: cv_mRNA_corr.RDS, cv_mRNA_f_corr.RDS, and cv_mRNA_m_corr.RDS.rds in [results/2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
 
 #### miRNA
 miRNA pre-processing used DESeq2 library.
 
 - Input: data_miRNA.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
-- Output: cv_miRNA_corr.RDS, cv_miRNA_f_corr.RDS, and cv_miRNA_m_corr.RDS.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
+- Output: cv_miRNA_corr.RDS, cv_miRNA_f_corr.RDS, and cv_miRNA_m_corr.RDS.rds in [results/2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
 
 
 #### DNAm
@@ -41,7 +41,7 @@ In DNAm experiments for the pooled and female cohorts, the Slide covariate was c
 For similar reasons, in DNAm experiments for the male cohort, both Slide and Array were corrected separately.
 
 - Input: normalised beta-values of probes (myNorm.mdd.RDS), pd file containes metadata of samples (pd_mdd.RDS) and leucocyte fractions estimation using Houseman method (LeucocyteFraction.mdd.RDS) all in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
-- Output: cv_DNAm_corr.RDS, cv_DNAm_f_corr.RDS, and cv_DNAm_m_corr.RDS.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
+- Output: cv_DNAm_corr.RDS, cv_DNAm_f_corr.RDS, and cv_DNAm_m_corr.RDS.rds in [results/2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
 
 Due to computational limitations, a pre-filtering was applied to DNAm data: in our own analysis 10% of most variable CpGs selected for downstream analyses.
 Due to GitHub storage limitation, this frequence was lowed in the code provided 
@@ -58,6 +58,9 @@ Then weight vectors used to compute the best factor were retrieved. They represe
 
 Code was provided for MCIA, MOFA (use python), JIVE, RGCCA and IntNMF.
 
+- [3_FeatureSelection](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.r)
+- Input are covariables (cov_pooled) in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data), and pre-pocessed data of female fold 1 computed in the previous step (cv_DNAm_f_corr.rds, cv_miRNA_f_corr.rds, cv_mRNA_f_corr.rds) in [results/2_PreProcessing](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
+- Output: cv_fold.rds, cv_fold_male.rds and cv_fold_female.rds in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
 
 
 
