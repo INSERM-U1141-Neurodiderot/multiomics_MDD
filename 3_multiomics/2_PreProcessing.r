@@ -292,3 +292,118 @@ saveRDS(cv_DNAm_f_corr , file = "results/2_PreProcessing/cv_DNAm_f_corr.RDS")
 
 cv_DNAm_m_corr = correction_DNAm(cv_fold = cv_fold_male, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05)
 saveRDS(cv_DNAm_m_corr , file = "results/2_PreProcessing/cv_DNAm_m_corr.RDS")
+
+
+
+
+
+#####NO PYTHON VERSION
+################
+###   DNAm   ###
+################
+myNorm.mdd = readRDS("data/myNorm.mdd.RDS") # normalised beta-values of probes
+pd_mdd = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
+LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
+
+var_filter = function (DNAm_all , freq = 0.1 )  {
+  ### filter according to variance 
+  rvars = rowVars (DNAm_all)
+  names(rvars) = rownames(DNAm_all)
+  top_var = rvars %>% .[order(-.)] %>% head (n=round ( freq * length(.) ))  
+  DNAm_filtered =  DNAm_all [ names(top_var) , ]
+  DNAm_filtered = t(DNAm_filtered)
+  return(DNAm_filtered)
+}
+
+
+cons_MDD_cor = function ( myNorm.mdd , pd_mdd , LeucocyteFraction.mdd, train = TRUE) {
+  
+  # Step one: data correction
+  # using ComBat implemented in the sva package
+  # the model indicating what should be "protected" variable of interest.
+  #Here we do not want to protect any variable so we use a null model
+  mod0 <- model.matrix(~1, data = pd_mdd)
+  
+  # consecutive correction removing  slide, array, sex, age, and BMI
+  warning("Correcting for : Slide")
+  bat <- ComBat(dat=myNorm.mdd, batch = pd_mdd$Slide, mod=mod0)
+  warning("Correcting for : Array")
+  if (length(table(pd_mdd$Array)) > 1){
+    bat <- ComBat(dat=bat, batch=pd_mdd$Array, mod=mod0)
+  }
+  warning("Correcting for : Sex")
+  if (length(table(pd_mdd$Sex)) > 1){
+    bat <- ComBat(dat=bat, batch=pd_mdd$Sex, mod=mod0)
+  }
+  warning("Correcting for : Age_bin")
+  bat <- ComBat(dat=bat, batch = pd_mdd$Age_bin, mod = mod0)
+  warning("Correcting for : BMI.bin")
+  bat <- ComBat(dat=bat, batch = pd_mdd$BMI.bin, mod = mod0)
+  
+  #Cell count correction (probes selection)
+  if (train == TRUE) {
+    blood = LeucocyteFraction.mdd[colnames(bat),]
+    
+    beta.lm = lm( t(bat) ~ CD4+CD8+MO+B+NK+GR ,
+                  data=blood[bat %>% colnames , 1:6 ] )
+    
+    b.value.mdd.bin<- beta.lm$residuals + matrix(apply(bat, 1, mean) ,
+                                                 nrow=nrow( beta.lm$residuals ), 
+                                                 ncol=ncol( beta.lm$residuals ))
+    b.value.mdd.bin[b.value.mdd.bin >= 1] <- 0.99999999
+    b.value.mdd.bin[b.value.mdd.bin <= 0] <- 0.00000001
+    correct.b.value.mdd.bin.nopreservation<-b.value.mdd.bin
+    
+    rownames(correct.b.value.mdd.bin.nopreservation) = pd_mdd [match(rownames(correct.b.value.mdd.bin.nopreservation) , pd_mdd$Sample_Name), "Name"]
+    
+    return( list ( correct.b =  correct.b.value.mdd.bin.nopreservation ,
+                   model = beta.lm ) )
+  }else{
+    return (bat)
+  }
+}
+
+
+correct_DNAm = function (data , pd_mdd, folds , cov_pooled, LeucocyteFraction.mdd, freq = 0.1) {
+  
+  warning ("Correcting train data")
+  train_DNAm   = data [ , pd_mdd [ folds$train , "Sample_Name" ] ]
+  corrected_DNAm_train = cons_MDD_cor (train_DNAm ,  pd_mdd [ folds$train ,  ] , LeucocyteFraction.mdd, train = TRUE)
+  corrected_DNAm_train_f = var_filter ( t (corrected_DNAm_train$correct.b), freq = freq)
+  
+  warning ("Correcting test data")
+  #Using probes selected by training dataset correction
+  test_DNAm   = data [ colnames(corrected_DNAm_train_f), pd_mdd [ folds$test , "Sample_Name" ] ]
+  corrected_DNAm_test = cons_MDD_cor (test_DNAm ,  pd_mdd [ folds$test ,  ] , LeucocyteFraction.mdd, train = FALSE )
+  corrected_DNAm_test= corrected_DNAm_test [colnames(corrected_DNAm_train_f) , ]
+  
+  warning (paste0("Predict results for test based on coef from train: " , Sys.time() ) )
+  corrected_DNAm_p =  predict (corrected_DNAm_train$model ,  cbind( corrected_DNAm_test %>% t %>% as.data.frame , LeucocyteFraction.mdd[colnames(corrected_DNAm_test), 1:6] )   )
+  corrected_DNAm_p = corrected_DNAm_p [ , rownames(corrected_DNAm_test)  ]
+  
+  warning (paste0("Predict Done: " , Sys.time() ) )
+  
+  corrected_DNAm_test_t =  t(corrected_DNAm_test)
+  residu = (corrected_DNAm_test_t- corrected_DNAm_p ) %>% as.data.frame
+  b.value.mdd.bin =  as.matrix(residu)  + matrix(apply(corrected_DNAm_test_t, 2, mean) ,nrow=nrow( residu), ncol=ncol( residu ))
+  
+  b.value.mdd.bin[b.value.mdd.bin >= 1] <- 0.99999999
+  b.value.mdd.bin[b.value.mdd.bin <= 0] <- 0.00000001
+  corrected_DNAm_test_v = b.value.mdd.bin
+  
+  rownames(corrected_DNAm_test_v) = pd_mdd [match(rownames(corrected_DNAm_test_v) , pd_mdd$Sample_Name), "Name"] 
+  corrected_DNAm_test_f = corrected_DNAm_test_v
+  return ( list ( corrected_DNAm_train = corrected_DNAm_train_f ,
+                  corrected_DNAm_test  = corrected_DNAm_test_f) )
+}
+
+cv_DNAm_corr = correct_DNAm (myNorm.mdd , pd_mdd, cv_fold [[1]] , cov_pooled, LeucocyteFraction.mdd, freq = 0.01)
+cv_DNAm_f_corr = correct_DNAm (myNorm.mdd , pd_mdd, cv_fold_female [[1]] , cov_pooled, LeucocyteFraction.mdd, freq = 0.05)
+cv_DNAm_m_corr = correct_DNAm (myNorm.mdd , pd_mdd, cv_fold_male [[1]] , cov_pooled, LeucocyteFraction.mdd, freq = 0.05)
+
+#Loop for correcting all folds
+
+saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr.RDS")
+saveRDS(cv_DNAm_f_corr , file = "results/2_PreProcessing/cv_DNAm_f_corr.RDS")
+saveRDS(cv_DNAm_m_corr , file = "results/2_PreProcessing/cv_DNAm_m_corr.RDS")
+
