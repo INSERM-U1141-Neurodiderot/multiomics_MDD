@@ -19,20 +19,20 @@ For comparison, the same CV procedure was applied to features corresponding to d
 
 - General input: cov_pooled.rds, cv_fold.rds, cv_fold_female.rds and cv_fold_male.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 
-##### mRNA
+#### mRNA
 mRNA pre-processing used DESeq2 library.
 
 - Input: data_mRNA.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 - Output: cv_mRNA_corr.RDS, cv_mRNA_f_corr.RDS, and cv_mRNA_m_corr.RDS.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
 
-##### miRNA
+#### miRNA
 miRNA pre-processing used DESeq2 library.
 
 - Input: data_miRNA.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 - Output: cv_miRNA_corr.RDS, cv_miRNA_f_corr.RDS, and cv_miRNA_m_corr.RDS.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/2_PreProcessing)
 
 
-##### DNAm
+#### DNAm
 DNAm pre-processing used neuroComBat v1.0.5 to adjust for covariates, an improved version dedicated to CV procedures: https://github.com/Jfortin1/ComBatHarmonization/tree/master/R
 In DNAm experiments for the pooled and female cohorts, the Slide covariate was corrected separately in the train and test sets, as it was composed of too many categories for proper representation (in train/test sets) and correction across all CV folds.
 For similar reasons, in DNAm experiments for the male cohort, both Slide and Array were corrected separately.
