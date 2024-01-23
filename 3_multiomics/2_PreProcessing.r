@@ -157,6 +157,16 @@ saveRDS(cv_miRNA_m_corr , file = "results/2_PreProcessing/cv_miRNA_m_corr.RDS")
 ################
 ###   DNAm   ###
 ################
+var_filter = function (DNAm_all , freq = 0.1 )  {
+  ### filter according to variance 
+  rvars = rowVars (DNAm_all)
+  names(rvars) = rownames(DNAm_all)
+  top_var = rvars %>% .[order(-.)] %>% head (n=round ( freq * length(.) ))  
+  DNAm_filtered =  DNAm_all [ names(top_var) , ]
+  DNAm_filtered = t(DNAm_filtered)
+  return(DNAm_filtered)
+}
+
 reticulate::use_python("/opt/miniconda3/bin/python3.7", required=TRUE)
 np = import("numpy")
 CombatModel = import("neurocombat_sklearn")
@@ -200,7 +210,6 @@ neurocombat_correct = function(model , Data  , CovData , Cov ) {
 }
 
 CovDNAm = c("Array" ,  "Sex" , "BMI.bin" , "Age_bin"  )
-blood = readRDS("data/LeucocyteFraction.mdd_2.RDS")
 diff_DNAm = function (DNAm_T , cov_pooled) {
   
   # Step four: DMP analysis
@@ -221,8 +230,9 @@ diff_DNAm = function (DNAm_T , cov_pooled) {
   
 }
 
-data , pd_mdd, folds , cov_pooled, LeucocyteFraction.mdd
-correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd){
+correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd, freq){
+        DNAm.npy = var_filter(DNAm.npy, freq)
+        
         # Creating models
         model  = CombatModel$CombatModel()
         modelFtrain = CombatModel$CombatModel()
@@ -251,7 +261,7 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd)
         rownames (DNAm_Test) = cv_fold[[i]]$test
         
         b.value.mdd.bin = NULL
-        beta.lm = lm (  as.matrix(DNAm_Train)  ~ CD4+CD8+MO+B+NK+GR , data = blood[ rownames(DNAm_Train)  , 1:6 ]  )
+        beta.lm = lm (  as.matrix(DNAm_Train)  ~ CD4+CD8+MO+B+NK+GR , data = LeucocyteFraction.mdd[ rownames(DNAm_Train)  , 1:6 ]  )
         b.value.mdd.bin<- beta.lm$residuals + matrix(apply(DNAm_Train, 2, mean) ,nrow=nrow( beta.lm$residuals ), ncol=ncol( beta.lm$residuals ))
         
         b.value.mdd.bin[b.value.mdd.bin >= 1] <- 0.99999999
@@ -260,7 +270,7 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd)
         DNAm_Train_c = b.value.mdd.bin
         
         b.value.mdd.res= NULL
-        corrected_DNAm_p =  predict ( beta.lm ,  cbind( DNAm_Test %>% as.data.frame , blood[rownames(DNAm_Test), 1:6]  )   )
+        corrected_DNAm_p =  predict ( beta.lm ,  cbind( DNAm_Test %>% as.data.frame , LeucocyteFraction.mdd[rownames(DNAm_Test), 1:6]  )   )
         residu = (as.matrix(DNAm_Test) - corrected_DNAm_p) %>% as.data.frame
         b.value.mdd.res<- as.matrix(residu) + matrix(apply(DNAm_Test, 2, mean) ,nrow=nrow( residu), ncol=ncol( residu )) 
         b.value.mdd.res[b.value.mdd.res >= 1] <- 0.99999999
@@ -274,11 +284,11 @@ myNorm.mdd = readRDS("data/myNorm.mdd.RDS") # normalised beta-values of probes
 pd_mdd = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
 LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
 
-cv_DNAm_corr = correction_DNAm(cv_fold = cv_fold, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd){
+cv_DNAm_corr = correction_DNAm(cv_fold = cv_fold, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.01)
 saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr.RDS")
         
-cv_DNAm_f_corr = correction_DNAm(cv_fold = cv_fold_female, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd){
+cv_DNAm_f_corr = correction_DNAm(cv_fold = cv_fold_female, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05)
 saveRDS(cv_DNAm_f_corr , file = "results/2_PreProcessing/cv_DNAm_f_corr.RDS")
 
-cv_DNAm_m_corr = correction_DNAm(cv_fold = cv_fold_male, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd){
+cv_DNAm_m_corr = correction_DNAm(cv_fold = cv_fold_male, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05)
 saveRDS(cv_DNAm_m_corr , file = "results/2_PreProcessing/cv_DNAm_m_corr.RDS")
