@@ -6,9 +6,13 @@ Case-Control multi omics analysis for DNAm, mRNA and miRNA.
 ## 1 - Cross-validation
 
 A repeated 5-fold CV (5 repetitions, Fig.S2) with stratification was used to prevent overfitting.
+
 For each re-sampling to be representative of the original dataset, stratification was systematically undertaken based on MDD status, and the Slide (DNAm experiments) and sex (pooled cohort only) covariates.
+
 For each train set (4/5 of samples), pre-processing, feature selection and clustering were performed as described above.
+
 For the test set (remaining 1/5), variables selected on the train set were extracted, pre-processed by applying the different models fitted on the train set and label propagation was used to transfer inferred clusters from the train to the test.
+
 For comparison, the same CV procedure was applied to features corresponding to differential analyses results (estimated on each train set separately) and to all features without selection.
 
 - [1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
@@ -37,7 +41,9 @@ miRNA pre-processing used DESeq2 library.
 
 #### DNAm
 DNAm pre-processing used neuroComBat v1.0.5 to adjust for covariates, an improved version dedicated to CV procedures: https://github.com/Jfortin1/ComBatHarmonization/tree/master/R
+
 In DNAm experiments for the pooled and female cohorts, the Slide covariate was corrected separately in the train and test sets, as it was composed of too many categories for proper representation (in train/test sets) and correction across all CV folds.
+
 For similar reasons, in DNAm experiments for the male cohort, both Slide and Array were corrected separately.
 
 - Input: normalised beta-values of probes (myNorm.mdd.RDS), pd file containes metadata of samples (pd_mdd.RDS) and leucocyte fractions estimation using Houseman method (LeucocyteFraction.mdd.RDS) all in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
