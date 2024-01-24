@@ -138,6 +138,9 @@ correct_miRNA = function (data , folds , cov_pooled, All = T) {
       corrected_miRNA_test  = (lm(t(assay(vst_test_adj))~ Rin.miR + BMI + AGE + Polynuclear_neutrophile + Lymphocyte, 
                                   data=cov_pooled[colnames(assay(vst_test_adj)) , covmiRNA]) )$residuals
     }
+    col = colnames(corrected_miRNA_test)[colnames(corrected_miRNA_test) %in% colnames(corrected_miRNA_train)]
+    corrected_miRNA_test = corrected_miRNA_test[, col]
+    corrected_miRNA_train = corrected_miRNA_train[, col]
     return ( list ( corrected_miRNA_train = corrected_miRNA_train ,
                     corrected_miRNA_test  = corrected_miRNA_test) )
 }
