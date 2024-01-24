@@ -5,7 +5,7 @@ Case-Control multi omics analysis for DNAm, mRNA and miRNA.
 
 ## 1 - Cross-validation
 
-A repeated 5-fold CV (5 repetitions, Fig.S2) with stratification was used to prevent overfitting.
+A repeated 5-fold CV (5 repetitions) with stratification was used to prevent overfitting.
 
 For each re-sampling to be representative of the original dataset, stratification was systematically undertaken based on MDD status, and the Slide (DNAm experiments) and sex (pooled cohort only) covariates.
 
