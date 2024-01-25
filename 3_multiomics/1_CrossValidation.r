@@ -57,8 +57,8 @@ for (folds in c(1:5) ) {
                                                    %>% .$Samp ) ) ) }
     }
 
-saveRDS(cv_fold , file = "cv_fold.RDS") 
-saveRDS(cv_fold_female , file = "cv_fold_female.RDS") 
-saveRDS(cv_fold_male , file = "cv_fold_male.RDS") 
+saveRDS(cv_fold , file = "results/1_CrossValidation/cv_fold.RDS") 
+saveRDS(cv_fold_female , file = "results/1_CrossValidation/cv_fold_female.RDS") 
+saveRDS(cv_fold_male , file = "results/1_CrossValidation/cv_fold_male.RDS") 
 
 
