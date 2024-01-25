@@ -5,8 +5,6 @@ library(RGCCA)
 library(MOFA2)
 library(IntNMF)
 
-setwd('D:/Downloads/multiomics')
-
 cv_DNAm_f_corr = readRDS("results/2_PreProcessing/cv_DNAm_f_corr.RDS")
 cv_miRNA_f_corr = readRDS("results/2_PreProcessing/cv_miRNA_f_corr.RDS")
 cv_mRNA_f_corr = readRDS("results/2_PreProcessing/cv_mRNA_f_corr.RDS")
@@ -221,5 +219,12 @@ fracts = list (miRNA = 0.01 , mRNA = 0.1 , DNAm =  0.1)
 om = list (miRNA =  "miRNA" , mRNA =  "mRNA" , DNAm = "DNAm")
 
 data_jive_train = mapply(function(x , y) {gen_omic_n (features_w_jive , best_cor , x , omics = omics_train , frac = y )}  , om , fracts  )
-data_jive_test = mapply(function(x , y) {gen_omic_n (features_w_jive , best_cor , x , omics = omics_test , frac = y )}  , om , fracts  )
+
+data_jive_test = omics_test
+data_jive_test$mRNA = data_jive_test$mRNA[, colnames(data_jive_train$mRNA)]
+data_jive_test$miRNA = data_jive_test$miRNA[, colnames(data_jive_train$miRNA)]
+data_jive_test$DNAm = data_jive_test$DNAm[, colnames(data_jive_train$DNAm)]
+
+saveRDS(data_jive_train, 'results/3_FeaturesSelection/data_jive_train.RDS')
+saveRDS(data_jive_test, 'results/3_FeaturesSelection/data_jive_test.RDS')
 
