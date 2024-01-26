@@ -68,11 +68,6 @@ Then weight vectors used to compute the best factor were retrieved. They represe
 
 - Code was provided for MCIA, MOFA (use python), JIVE, RGCCA and IntNMF: [3_FeatureSelection](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.r). However, only JIVE features were actually computed here.
 
-
-
-
-# WORK IN PROGRESS
-
 ## 4 - Multiomic clustering with SNF
 To evaluate the ability of selected features to estimate meaningful clusters of subjects in regard to MDD status, we used an unsupervised integrative clustering technique, SNF.
 
