@@ -29,7 +29,7 @@ Finally, with the goal of fully leveraging our genome-wide and multiomic data, w
 
 - Cross-Validations: [1_CrossValidation.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
 - Pre-processing: [2_PreProcessing.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/2_PreProcessing.r)
-- Feature selection:([3_FeatureSelection.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.R))
+- Feature selection: [3_FeatureSelection.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/3_FeatureSelection.R)
 - Multiomic clustering: [4_SNFClustering.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/4_SNFClustering.R)
 
 ## Cite
