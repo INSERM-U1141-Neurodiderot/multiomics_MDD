@@ -1,5 +1,6 @@
 # Multi omics analyses
-Case-Control multi omics analysis for DNAm, mRNA and miRNA.
+We implemented a supervised multiomic integration framework designed to identify blood-derived molecular features that best discriminate MDD patients from healthy controls. Our framework was encapsulated in a Cross-Validation (CV) procedure. The code for this Case-Control multi omics analysis for DNAm, mRNA and miRNA is presented in several parts :
+
 
 ## 1 - Cross-validation
 
