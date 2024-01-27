@@ -1,5 +1,3 @@
-R version 4.3.2 (2023-10-31 ucrt)
-
 # Multi omics analyses
 Case-Control multi omics analysis for DNAm, mRNA and miRNA.
 
@@ -16,7 +14,7 @@ For the test set (remaining 1/5), variables selected on the train set were extra
 For comparison, the same CV procedure was applied to features corresponding to differential analyses results (estimated on each train set separately) and to all features without selection.
 
 - Code: [1_CrossValidation.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
-- Input: [data/cov_pooled.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data/cov_pooled.rds))
+- Input: [data/cov_pooled.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data/cov_pooled.rds)
 - Output: cv_fold.rds, cv_fold_male.rds and cv_fold_female.rds in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
 
 ## 2 - Pre-processing
@@ -67,4 +65,6 @@ Several sets of SNF parameters were evaluated through CV
 - neighbors ∈ {10, 20, . . . , 50}
 - iters ∈ {10, 20, . . . , 60}
 - alpha ∈ {0.3, 0.4, . . . , 0.8})
+
+NB: R version 4.3.2 (2023-10-31 ucrt)
 
