@@ -30,7 +30,7 @@ For comparison, the same CV procedure was applied to features corresponding to d
 
 Pre-processing was applied on each CV folds. In this repository, we provide example for the first folds of pooled, male and female.
 
-- Code: [2_PreProcessing.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/2_PreProcessing.r)
+- Code: [2_PreProcessing.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/2_PreProcessing.r), and python script [neurocombat_sklearn.py](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/neurocombat_sklearn.py)
 - General input: _cov_pooled.rds_, _cv_fold.rds_, _cv_fold_female.rds_ and _cv_fold_male.rds_ in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
 
 #### mRNA
