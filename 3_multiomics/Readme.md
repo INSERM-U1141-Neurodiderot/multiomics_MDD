@@ -1,3 +1,19 @@
+R version 4.3.2 (2023-10-31 ucrt)
+Pakages:
+- caret (6.0.94)
+- ChAMP (2.32.0)
+- DESeq2 (1.42.0)
+- dplyr (1.1.4)
+- IntNMF (1.2.0)
+- MOFA2 (1.12.0)
+- omicade4 (1.42.0)
+- pROC (1.18.5)
+- r.jive (2.4)
+- RGCCA (3.0.3)
+- SNFtool (2.3.1)
+- stringr (1.5.5)
+- sva (3.50.0)
+
 # Multi omics analyses
 We implemented a supervised multiomic integration framework designed to identify blood-derived molecular features that best discriminate MDD patients from healthy controls. Our framework was encapsulated in a Cross-Validation (CV) procedure. The code for this Case-Control multi omics analysis for DNAm, mRNA and miRNA is presented in several parts :
 
