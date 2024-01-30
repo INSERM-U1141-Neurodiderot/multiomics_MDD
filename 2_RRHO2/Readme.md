@@ -1,4 +1,4 @@
-R version 4.3.2 (2023-10-31 ucrt)
+R version 4.3.2 (2023-10-31 ucrt) with packages:
 - dplyr (1.1.4)
 - parallel (4.3.2)
 - VennDiagram (1.7.3)
