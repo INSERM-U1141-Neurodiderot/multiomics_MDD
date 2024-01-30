@@ -1,6 +1,4 @@
-R version 4.3.2 (2023-10-31 ucrt)
-
-Pakages:
+R version 4.3.2 (2023-10-31 ucrt) with packages:
 - caret (6.0.94)
 - ChAMP (2.32.0)
 - DESeq2 (1.42.0)
