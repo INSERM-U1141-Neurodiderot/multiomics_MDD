@@ -1,4 +1,8 @@
 R version 4.3.2 (2023-10-31 ucrt)
+Pakages:
+- sva (3.50.0)
+- ChAMP (2.32.0)
+- lumi (2.54.0)
 
 # Single omics analyses
 Case-Control single omics analysis for DNAm, mRNA and miRNA.
