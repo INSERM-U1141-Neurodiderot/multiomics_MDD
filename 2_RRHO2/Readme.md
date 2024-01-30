@@ -1,4 +1,8 @@
 R version 4.3.2 (2023-10-31 ucrt)
+- dplyr (1.1.4)
+- parallel (4.3.2)
+- VennDiagram (1.7.3)
+- RRHO (1.42.0)
 
 # RRHO2par
 
