@@ -1,5 +1,4 @@
-R version 4.3.2 (2023-10-31 ucrt)
-Pakages:
+R version 4.3.2 (2023-10-31 ucrt) with packages:
 - sva (3.50.0)
 - ChAMP (2.32.0)
 - lumi (2.54.0)
