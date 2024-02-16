@@ -5,9 +5,9 @@ library(RGCCA)
 library(MOFA2)
 library(IntNMF)
 
-cv_DNAm_f_corr = readRDS("results/2_PreProcessing/cv_DNAm_f_corr.RDS")
-cv_miRNA_f_corr = readRDS("results/2_PreProcessing/cv_miRNA_f_corr.RDS")
-cv_mRNA_f_corr = readRDS("results/2_PreProcessing/cv_mRNA_f_corr.RDS")
+cv_DNAm_f_corr = readRDS("results/2_PreProcessing/cv_DNAm_corr.RDS")
+cv_miRNA_f_corr = readRDS("results/2_PreProcessing/cv_miRNA_corr.RDS")
+cv_mRNA_f_corr = readRDS("results/2_PreProcessing/cv_mRNA_corr.RDS")
 cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
 
 omics_test = list(miRNA = cv_miRNA_f_corr$corrected_miRNA_test,
@@ -215,7 +215,7 @@ gen_omic_n = function (features_w , best_fact , o , omics , frac = 0.1) {
   }
 }
 
-fracts = list (miRNA = 0.01 , mRNA = 0.1 , DNAm =  0.1)
+fracts = list (miRNA = 0.1 , mRNA = 0.1 , DNAm =  0.1)
 om = list (miRNA =  "miRNA" , mRNA =  "mRNA" , DNAm = "DNAm")
 
 data_jive_train = mapply(function(x , y) {gen_omic_n (features_w_jive , best_cor , x , omics = omics_train , frac = y )}  , om , fracts  )

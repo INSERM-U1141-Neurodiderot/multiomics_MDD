@@ -3,20 +3,23 @@ library(stringr)
 library(DESeq2)
 library(ChAMP)
 library(sva)
+library(reticulate)
+
+setwd("/env/export/v_cng_n07_scratch/v_scratch_math_stats/gloaguen/neurodiderot/repro_paper/multiomics_MDD/3_multiomics/")
 
 ### input: covariables
 cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
 
 ### input: cv folds
-cv_fold = readRDS("results/1_CrossValidation/cv_fold.RDS")
-cv_fold_female = readRDS("results/1_CrossValidation/cv_fold_female.RDS")
-cv_fold_male = readRDS("results/1_CrossValidation/cv_fold_male.RDS")
+cv_fold = readRDS("cv_fold.RDS")
+cv_fold_female = readRDS("cv_fold_female.RDS")
+cv_fold_male = readRDS("cv_fold_male.RDS")
 
 ################
 ###   mRNA   ###
 ################
 
-data = readRDS('data/data_mRNA.rds')
+data = readRDS('data/data_mRNA.RDS')
 
 correct_mRNA = function (data , folds , cov_pooled, All = TRUE) {
         
@@ -170,9 +173,9 @@ var_filter = function (DNAm_all , freq = 0.1 )  {
   return(DNAm_filtered)
 }
 
-reticulate::use_python("/opt/miniconda3/bin/python3.7", required=TRUE)
+reticulate::virtualenv_create(envname = "repro_multiomics")
 np = import("numpy")
-CombatModel = import("neurocombat_sklearn")
+CombatModel = import_from_path("neurocombat_sklearn", path = "/env/export/v_home/q_unix/agloague/.virtualenvs/repro_multiomics/lib/python3.8/site-packages")
 neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , Train , Test) {
   Model  = model 
   
@@ -188,13 +191,11 @@ neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , 
   }
   if (length(Cov) == 1 ) {    
     
-    X_train = Model$fit_transform( DataTrain    ,
-                                   array_reshape(CovData [ Train ,  Cov ] , c(-1, 1)) 
-    )
+    X_train = Model$fit_transform(DataTrain    ,
+                                  as.data.frame(as.factor(CovData [ Train ,  Cov ])))
     
-    X_test = Model$transform(      DataTest   ,
-                                   array_reshape(CovData [ Test ,  Cov  ] , c(-1, 1)) 
-    )
+    X_test = Model$transform(DataTest   ,
+                             as.data.frame(as.factor(CovData [ Test ,  Cov ]))) 
   }
   
   return( list (X_train = X_train , 
@@ -205,8 +206,8 @@ neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , 
 neurocombat_correct = function(model , Data  , CovData , Cov ) {
   Model  = model 
   
-  Data_corrected = Model$fit_transform( Data ,
-                                        array_reshape( CovData [  ,   Cov  ] , c(-1, 1)) )
+  Data_corrected = Model$fit_transform(Data ,
+                                       as.data.frame(as.factor(CovData[ , Cov])))
   
   return( Data_corrected )
   
@@ -278,14 +279,22 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd,
         b.value.mdd.res<- as.matrix(residu) + matrix(apply(DNAm_Test, 2, mean) ,nrow=nrow( residu), ncol=ncol( residu )) 
         b.value.mdd.res[b.value.mdd.res >= 1] <- 0.99999999
         b.value.mdd.res[b.value.mdd.res <= 0] <- 0.00000001
+        
+        return ( list ( corrected_DNAm_train = DNAm_Train_c ,
+                        corrected_DNAm_test  = b.value.mdd.res) )
 }
-saveRDS (DNAm_Train_c , file = paste0("results/CV/Diff/" , train_nms  [[i]]) )
-saveRDS (b.value.mdd.res , file = paste0("results/CV/Diff/" , test_nms [[i]]) )
 
-
-myNorm.mdd = readRDS("data/myNorm.mdd.RDS") # normalised beta-values of probes
+myNorm.mdd = readRDS("../../../multiomics_MDD-main/3_multiomics/data/myNorm.mdd.RDS") # normalised beta-values of probes
 pd_mdd = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
 LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
+
+colnames(myNorm.mdd) = rownames(pd_mdd)[match(colnames(myNorm.mdd), pd_mdd$Sample_Name)]
+myNorm.mdd = myNorm.mdd[, -which(is.na(colnames(myNorm.mdd)))]
+
+tmp_rownames = rownames(pd_mdd)[match(rownames(LeucocyteFraction.mdd), pd_mdd$Sample_Name)]
+idx_to_rm = which(is.na(tmp_rownames))
+LeucocyteFraction.mdd = LeucocyteFraction.mdd[-idx_to_rm, ]
+rownames(LeucocyteFraction.mdd) = tmp_rownames[-idx_to_rm]
 
 cv_DNAm_corr = correction_DNAm(cv_fold = cv_fold, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.01)
 saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr.RDS")

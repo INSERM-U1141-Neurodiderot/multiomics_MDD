@@ -10,8 +10,8 @@ cv_all_train = list (miRNA = data_jive_train$miRNA,
                      mRNA  = data_jive_train$mRNA,
                      DNAm  = data_jive_train$DNAm) 
 cv_all_test = list (miRNA = data_jive_test$miRNA,
-                     mRNA  = data_jive_test$mRNA,
-                     DNAm  = data_jive_test$DNAm) 
+                    mRNA  = data_jive_test$mRNA,
+                    DNAm  = data_jive_test$DNAm) 
 
 #####################################################################################
 
@@ -102,29 +102,18 @@ for (t in seq(10, 50, 10)){ #neighbors
       params = list(K = K, alpha = alpha, t = t, Nclust = 2)
       nomParam = paste('K', K, '_alpha', alpha, '_t', t, sep = '')
       print(nomParam)
-      for (i in 1:3){
-        omics = combn(c('mRNA', 'miRNA', 'DNAm'), i)
-        for (om in 1:ncol(omics)){
-          DataTrain = list()
-          DataTest = list()
-          for (o in omics[, om]){
-            DataTrain[[o]] = cv_all_train[[o]]
-            DataTest[[o]] = cv_all_test[[o]]
-          }
-          nomOm = paste(omics[, om], collapse = '_')
-          temp = data.frame(omics = nomOm, K = params$K, alpha = params$alpha, t = params$t)
-          temp = cbind(temp, as.data.frame(t(SNF_Pred (DataTrain, DataTest,
-                                                             labTrain, labTest,
-                                                             params, TrueLabs = T)))
-          )
-          if(dim(SNFPredRT)[1] == 0){
-            SNFPredRT = temp
-          }else{
-            SNFPredRT = rbind(SNFPredRT, temp)
-          }
-          cat(paste(nomOm, SNFPredRT[[nomParam]][[nomOm]]['AriTest'], '\n'))
-        }
+      nomOm = paste(omics, collapse = '_')
+      temp = data.frame(omics = nomOm, K = params$K, alpha = params$alpha, t = params$t)
+      temp = cbind(temp, as.data.frame(t(SNF_Pred (cv_all_train, cv_all_test,
+                                                   labTrain, labTest,
+                                                   params, TrueLabs = T)))
+      )
+      if(dim(SNFPredRT)[1] == 0){
+        SNFPredRT = temp
+      }else{
+        SNFPredRT = rbind(SNFPredRT, temp)
       }
+      cat(paste(nomOm, SNFPredRT[[nomParam]][[nomOm]]['AriTest'], '\n'))
     }
   }
 }
