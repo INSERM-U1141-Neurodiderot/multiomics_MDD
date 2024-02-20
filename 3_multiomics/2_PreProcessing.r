@@ -213,7 +213,6 @@ neurocombat_correct = function(model , Data  , CovData , Cov ) {
   
 }
 
-CovDNAm = c("Array" ,  "Sex" , "BMI.bin" , "Age_bin"  )
 diff_DNAm = function (DNAm_T , cov_pooled) {
   
   # Step four: DMP analysis
@@ -234,7 +233,7 @@ diff_DNAm = function (DNAm_T , cov_pooled) {
   
 }
 
-correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd, freq){
+correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd, freq, CovDNAm, CovSep){
         DNAm.npy = var_filter(DNAm.npy, freq)
         
         # Creating models
@@ -255,8 +254,10 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd,
         modelFtrain = CombatModel$CombatModel()
         modelFetest = CombatModel$CombatModel()
         
-        DNAm_Train_cor = neurocombat_correct (model = modelFtrain, Data = Combat_DNAm$X_train , CovData = pd_mdd2 [cv_fold[[i]]$train ,], Cov = "Slide")
-        DNAm_Test_cor = neurocombat_correct (model = modelFetest, Data = Combat_DNAm$X_test , CovData = pd_mdd2 [cv_fold[[i]]$test ,], Cov = "Slide")
+        for (Cov in CovSep){
+                DNAm_Train_cor = neurocombat_correct (model = modelFtrain, Data = Combat_DNAm$X_train , CovData = pd_mdd2 [cv_fold[[i]]$train ,], Cov = Cov)
+                DNAm_Test_cor = neurocombat_correct (model = modelFetest, Data = Combat_DNAm$X_test , CovData = pd_mdd2 [cv_fold[[i]]$test ,], Cov = Cov)
+        }
         DNAm_Train = as.data.frame (DNAm_Train_cor)
         DNAm_Test = as.data.frame (DNAm_Test_cor)
         
@@ -296,15 +297,17 @@ idx_to_rm = which(is.na(tmp_rownames))
 LeucocyteFraction.mdd = LeucocyteFraction.mdd[-idx_to_rm, ]
 rownames(LeucocyteFraction.mdd) = tmp_rownames[-idx_to_rm]
 
-cv_DNAm_corr = correction_DNAm(cv_fold = cv_fold, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.01)
+cv_DNAm_corr = correction_DNAm(cv_fold = cv_fold, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.01,
+                              CovDNAm = c("Array" ,  "Sex" , "BMI.bin" , "Age_bin"), CovSep = c('Slide))
 saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr.RDS")
         
-cv_DNAm_f_corr = correction_DNAm(cv_fold = cv_fold_female, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05)
+cv_DNAm_f_corr = correction_DNAm(cv_fold = cv_fold_female, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05,
+                              CovDNAm = c("Array" , "BMI.bin" , "Age_bin"), CovSep = c('Slide))
 saveRDS(cv_DNAm_f_corr , file = "results/2_PreProcessing/cv_DNAm_f_corr.RDS")
 
-cv_DNAm_m_corr = correction_DNAm(cv_fold = cv_fold_male, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05)
+cv_DNAm_m_corr = correction_DNAm(cv_fold = cv_fold_male, DNAm.npy = myNorm.mdd, i = 1, pd_mdd2 = pd_mdd, LeucocyteFraction.mdd = LeucocyteFraction.mdd, freq = 0.05,
+                              CovDNAm = c("BMI.bin" , "Age_bin"), CovSep = c('Array', 'Slide))
 saveRDS(cv_DNAm_m_corr , file = "results/2_PreProcessing/cv_DNAm_m_corr.RDS")
-
 
 
 
