@@ -147,6 +147,11 @@ saveRDS(cv_miRNA_corr , file = "results/2_PreProcessing/cv_miRNA_corr.RDS")
 ################
 ###   DNAm   ###
 ################
+reticulate::virtualenv_create(envname = "repro_multiomics", packages = c('numpy', 'neurocombat_sklearn'))
+np = import("numpy")
+reticulate::virtualenv_install(envname = "repro_multiomics", packages = c('numpy', 'neurocombat_sklearn'))
+CombatModel = import_from_path("neurocombat_sklearn", path = "~/.virtualenvs/repro_multiomics/lib/site-packages/")
+
 var_filter = function (DNAm_all , freq = 0.1 )  {
   ### filter according to variance 
   rvars = rowVars (DNAm_all)
@@ -157,9 +162,6 @@ var_filter = function (DNAm_all , freq = 0.1 )  {
   return(DNAm_filtered)
 }
 
-reticulate::virtualenv_create(envname = "repro_multiomics")
-np = import("numpy")
-CombatModel = import_from_path("neurocombat_sklearn", path = "/env/export/v_home/q_unix/agloague/.virtualenvs/repro_multiomics/lib/python3.8/site-packages")
 neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , Train , Test) {
   Model  = model 
 
