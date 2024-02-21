@@ -5,8 +5,8 @@ library(ChAMP)
 library(sva)
 library(reticulate)
 
-### Set your working directory
-setwd("/env/export/v_cng_n07_scratch/v_scratch_math_stats/gloaguen/neurodiderot/repro_paper/multiomics_MDD/3_multiomics/")
+### CHANGE LINE BELOW AND DEFINE YOUR OWN WORKING DIRECTORY
+setwd("~/repro_paper/multiomics_MDD/3_multiomics/")
 
 ### input: covariables
 cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
