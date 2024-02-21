@@ -23,8 +23,8 @@ A repeated 5-fold CV (5 repetitions) with stratification was used to prevent ove
 For comparison, the same CV procedure was applied to features corresponding to differential analyses results (estimated on each train set separately) and to all features without selection.
 
 - Code: [1_CrossValidation.r](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/1_CrossValidation.r)
-- Input: _cov_pooled.rds_ in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
-- Output: _cv_fold.rds_, _cv_fold_male.rds_ and _cv_fold_female.rds_ in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
+- Input: cov_pooled.rds in [data](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/data)
+- Output: cv_fold.rds in [results/1_CrossValidation](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/1_CrossValidation)
 
 ## 2 - Pre-processing
 
