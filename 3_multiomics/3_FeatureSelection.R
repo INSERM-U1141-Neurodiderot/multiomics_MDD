@@ -120,15 +120,15 @@ for (i in 1:length(cv_DNAm_corr)){
   # }
   # factors = jV[, 1:rankJV]
   # 
-  # colnames(factors) = paste0("JIVE_" , 1:10 )
+  # colnames(factors) = paste0("JIVE_" , 1:num.factors )
   # rownames(factors) = rownames(omics_train$mRNA)
   # names (features_w) = c("miRNA",  "mRNA" , "DNAm")
   # 
   # get_jiv_omic_comp = function (factorizations_jive , x) {
   #   svd_s = svd (factorizations_jive$joint[[x]])
   #   s_v = svd_s$v %*% diag(svd_s$d)
-  #   s = s_v [,1:10]
-  #   colnames (s) = paste0("JIVE_Compo_" , 1:10)
+  #   s = s_v [,1:num.factors]
+  #   colnames (s) = paste0("JIVE_Compo_" , 1:num.factors)
   #   rownames (s) = omics_train$covariates %>% rownames
   #   return(s)
   # }
@@ -164,13 +164,13 @@ for (i in 1:length(cv_DNAm_corr)){
   # factorizations_intnmf = nmf.mnnals(dat = lapply (omics_pos, as.matrix ) ,  k  = num.factors)
   # 
   # factors = factorizations_intnmf$W
-  # colnames(factors) = paste0( "IntNMF_" , 1:10 )
+  # colnames(factors) = paste0( "IntNMF_" , 1:num.factors )
   # 
   # features_w =list()
   # 
   # for(j in 1:length(omics_train [1:3])){
   #   features_w[[j]] = t(factorizations_intnmf$H[[j]]) 
-  #   colnames(features_w [[j]] ) = paste0( "IntNMF_" , 1:10 )
+  #   colnames(features_w [[j]] ) = paste0( "IntNMF_" , 1:num.factors )
   # }
   # names (features_w) = c("miRNA",  "mRNA" , "DNAm")
   # 
@@ -205,13 +205,13 @@ for (i in 1:length(cv_DNAm_corr)){
   # MOFAobject_trained = run_mofa(MOFAobject, outfile)
   # 
   # features_w = get_weights(MOFAobject_trained)
-  # features_w = lapply (features_w , function(x) {colnames (x) = paste0 ("MOFA_" , 1:10) ; x } )
+  # features_w = lapply (features_w , function(x) {colnames (x) = paste0 ("MOFA_" , 1:num.factors) ; x } )
   # 
   # factors = get_factors (MOFAobject_trained) $group1 
-  # colnames (factors) = paste0("MOFA_" , 1:10)
+  # colnames (factors) = paste0("MOFA_" , 1:num.factors)
   # 
   # compo_mofa = MOFAobject_trained@expectations$W
-  # compo_mofa = lapply (compo_mofa , function (x) {colnames(x) = paste0("MOFA_Compo" , 1:10) ; x } )
+  # compo_mofa = lapply (compo_mofa , function (x) {colnames(x) = paste0("MOFA_Compo" , 1:num.factors) ; x } )
   # 
   # 
   # ###################
