@@ -1,5 +1,7 @@
 3_multiomics/cv_fold.RDS
 3_multiomics/cv_fold_female.RDS
 3_multiomics/cv_fold_male.RDS
-3_multiomics/results/*
 3_multiomics/*.png
+3_multiomics/results/2_PreProcessing/*
+3_multiomics/results/3_FeaturesSelection/*
+3_multiomics/results/4_SNFClustering/*
