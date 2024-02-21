@@ -150,7 +150,7 @@ saveRDS(cv_miRNA_corr , file = "results/2_PreProcessing/cv_miRNA_corr.RDS")
 reticulate::virtualenv_create(envname = "repro_multiomics", packages = c('numpy', 'neurocombat_sklearn'))
 np = import("numpy")
 reticulate::virtualenv_install(envname = "repro_multiomics", packages = c('numpy', 'neurocombat_sklearn'))
-CombatModel = import_from_path("neurocombat_sklearn", path = "~/.virtualenvs/repro_multiomics/lib/site-packages/")
+CombatModel = import_from_path("neurocombat_sklearn", path = "~/.virtualenvs/repro_multiomics/lib/site-packages/") #according to your version of python, the path of 'site-packages' in '.virtualenvs' may change
 
 var_filter = function (DNAm_all , freq = 0.1 )  {
   ### filter according to variance 
