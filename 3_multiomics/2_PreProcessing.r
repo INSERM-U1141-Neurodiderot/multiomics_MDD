@@ -255,13 +255,13 @@ rownames(LeucocyteFraction.mdd) = tmp_rownames[-idx_to_rm]
 
 CovDNAm      = c("Array" ,  "Sex" , "BMI.bin" , "Age_bin"  )
 CovSep       = c("Slide")
-cv_DNAm_corr = lapply (1:length(cv_fold), function(x) correction_DNAm(cv_fold      = cv_fold, 
-                                                             DNAm.npy              = myNorm.mdd, 
-                                                             i                     = x, 
-                                                             pd_mdd2               = pd_mdd, 
-                                                             LeucocyteFraction.mdd = LeucocyteFraction.mdd, 
-                                                             freq                  = 0.1,
-                                                             CovDNAm               = CovDNAm,
-							     CovSep                = CovSep))
+cv_DNAm_corr = lapply (1:length(cv_fold), function(x) correction_DNAm(cv_fold               = cv_fold, 
+                                                                      DNAm.npy              = myNorm.mdd, 
+                                                                      i                     = x, 
+                                                                      pd_mdd2               = pd_mdd, 
+                                                                      LeucocyteFraction.mdd = LeucocyteFraction.mdd, 
+                                                                      freq                  = 0.1,
+                                                                      CovDNAm               = CovDNAm,
+							              CovSep                = CovSep))
 
-saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr_filter_10.RDS")
+saveRDS(cv_DNAm_corr , file = "results/2_PreProcessing/cv_DNAm_corr.RDS")
