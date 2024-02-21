@@ -21,25 +21,4 @@ for (folds in c(1:5) ) {
   }
 }
 
-train_sex = test_sex = c()
-train_mdd = test_mdd = c()
-for (i in 1:25){
-  print("TRAIN")
-  train_sex = c(train_sex, max(abs(table(cov_pooled[cv_fold[[i]]$train, "SEX"])/sum(table(cov_pooled[cv_fold[[i]]$train, "SEX"])) - table(cov_pooled[, "SEX"])/sum(table(cov_pooled[, "SEX"])))))
-  train_mdd = c(train_mdd, max(abs(table(cov_pooled[cv_fold[[i]]$train, "GROUP"])/sum(table(cov_pooled[cv_fold[[i]]$train, "GROUP"])) - table(cov_pooled[, "GROUP"])/sum(table(cov_pooled[, "GROUP"])))))
-  print("TEST")
-  test_sex = c(test_sex, max(abs(table(cov_pooled[cv_fold[[i]]$test, "SEX"])/sum(table(cov_pooled[cv_fold[[i]]$test, "SEX"])) - table(cov_pooled[, "SEX"])/sum(table(cov_pooled[, "SEX"])))))
-  test_mdd = c(test_mdd, max(abs(table(cov_pooled[cv_fold[[i]]$test, "GROUP"])/sum(table(cov_pooled[cv_fold[[i]]$test, "GROUP"])) - table(cov_pooled[, "GROUP"])/sum(table(cov_pooled[, "GROUP"])))))
-}
-max(train_sex)
-max(train_mdd)
-max(test_sex)
-max(test_mdd)
-
-print()
-print(table(cov_pooled[, "GROUP"])/sum(table(cov_pooled[, "GROUP"])))
-unique(sapply(cv_fold, function(x) length(unique(unlist(x)))))
-sapply(cv_fold, function(x) sapply(x, length))
-
 saveRDS(cv_fold , file = "results/1_CrossValidation/cv_fold.RDS") 
-
