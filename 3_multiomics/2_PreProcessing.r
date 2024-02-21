@@ -241,7 +241,7 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd,
                         corrected_DNAm_test  = b.value.mdd.res) )
 }
 
-myNorm.mdd            = readRDS("../../../multiomics_MDD-main/3_multiomics/data/myNorm.mdd.RDS") # normalised beta-values of probes
+myNorm.mdd            = readRDS("TO_SET") # ADD PATH WHERE METHYLATION DATA IS STORED
 pd_mdd                = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
 LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
 
