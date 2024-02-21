@@ -70,9 +70,9 @@ For each jDR method and combination of blocks, a factor matrix representing the 
 
 ## 4 - Multiomic clustering with SNF
 To evaluate the ability of the selected features to estimate meaningful clusters of subjects in regard to MDD status, we used the integrative clustering technique, Similarity Network Fusion (SNF, [Wang et al. 2014](http://www.nature.com/nmeth/journal/v11/n3/full/nmeth.2810.html)). The code of SNF clustering is presented for pooled dataset reduced by RGCCA method. Several sets of SNF parameters were evaluated through CV:
-- neighbors ∈ {10, 20, . . . , 50}
-- iters ∈ {10, 20, . . . , 60}
-- alpha ∈ {0.3, 0.4, . . . , 0.8}
+--- neighbors ∈ {10, 20, . . . , 50}
+--- iters ∈ {10, 20, . . . , 60}
+--- alpha ∈ {0.3, 0.4, . . . , 0.8}
 
 - Code: [4_SNFClustering.R](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/4_SNFClustering.R)
 - Input generated in 'feature selection' steps (_data_test.RDS_ and _data_train.RDS_) and saved in [results/3_FeatureSelection](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/tree/main/3_multiomics/results/3_FeatureSelection)
