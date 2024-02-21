@@ -43,7 +43,7 @@ for (i in 1:length(cv_DNAm_corr)){
                        ncomp = num.factors,
                        scheme = "centroid",
                        scale = TRUE,
-                       init = "random",
+                       init = "random", # for the sake of computational time this parameter was set in this example to "random", though, results were computed with "init = "svd", which takes more time.
                        bias = TRUE,
                        tol = 1e-08,
                        verbose = T,
