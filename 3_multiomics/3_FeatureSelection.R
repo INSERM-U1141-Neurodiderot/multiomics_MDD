@@ -39,7 +39,7 @@ for (i in 1:length(cv_DNAm_corr)){
   ###   RGCCA Start  ###
   ######################
   
-  result_sgcca = rgcca(blocks  = omics_train,
+  result_rgcca = rgcca(blocks  = omics_train,
                        ncomp = num.factors,
                        scheme = "centroid",
                        scale = TRUE,
@@ -49,14 +49,14 @@ for (i in 1:length(cv_DNAm_corr)){
                        verbose = T,
                        superblock = T)
   
-  features_w       = result_sgcca$a[1:3]
+  features_w       = result_rgcca$a[1:3]
   features_w$miRNA = features_w$miRNA[colnames(omics_train$miRNA),]
   features_w$mRNA  = features_w$mRNA[colnames(omics_train$mRNA),]
   features_w$DNAm  = features_w$DNAm[colnames(omics_train$DNAm),]
   
   features_w = lapply(features_w , function (x) { colnames(x) = paste0("RGCCA_" , 1:num.factors) ; x  })
   
-  factors           = result_sgcca$Y$superblock
+  factors           = result_rgcca$Y$superblock
   colnames(factors) = paste0 ( "RGCCA_", 1:num.factors)
   
   ####################
