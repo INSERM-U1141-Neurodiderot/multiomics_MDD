@@ -1,5 +1,9 @@
 library(dplyr)
 library(RGCCA)
+library(omicade4)
+library(r.jive)
+library(MOFA2)
+library(IntNMF)
 
 cv_DNAm_corr  = readRDS("results/2_PreProcessing/cv_DNAm_corr.RDS")
 cv_miRNA_corr = readRDS("results/2_PreProcessing/cv_miRNA_corr.RDS")
