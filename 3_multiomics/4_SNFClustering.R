@@ -1,17 +1,7 @@
 library(caret)
 library(SNFtool)
 library(pROC)
-
-data_jive_train = readRDS(file = "results/3_FeaturesSelection/data_jive_train.RDS")
-data_jive_test = readRDS(file = "results/3_FeaturesSelection/data_jive_test.RDS")
-cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
-
-cv_all_train = list (miRNA = data_jive_train$miRNA,
-                     mRNA  = data_jive_train$mRNA,
-                     DNAm  = data_jive_train$DNAm) 
-cv_all_test = list (miRNA = data_jive_test$miRNA,
-                     mRNA  = data_jive_test$mRNA,
-                     DNAm  = data_jive_test$DNAm) 
+library(mclust)
 
 #####################################################################################
 
@@ -92,41 +82,61 @@ SNF_Pred = function (DataTrain , DataTest , labTrain , labTest , params , TrueLa
   return ( c( ConfMTest , ConfMTrain , AriTrain , AriTest, AucTrain, AucTest)  )
 }
 
-labTrain = cov_pooled [cv_all_train$miRNA %>% rownames , "GROUP" ] %>% as.character
-labTest = cov_pooled [cv_all_test$miRNA %>% rownames , "GROUP" ] %>% as.character
+##############################################################################
 
-SNFPredRT = data.frame()
-for (t in seq(10, 50, 10)){ #neighbors
-  for (K in seq(10, 60, 10)){ #iterations
-    for (alpha in seq(0.3, 0.8, 0.1)){ #alpha
-      params = list(K = K, alpha = alpha, t = t, Nclust = 2)
-      nomParam = paste('K', K, '_alpha', alpha, '_t', t, sep = '')
-      print(nomParam)
-      for (i in 1:3){
-        omics = combn(c('mRNA', 'miRNA', 'DNAm'), i)
-        for (om in 1:ncol(omics)){
-          DataTrain = list()
-          DataTest = list()
-          for (o in omics[, om]){
-            DataTrain[[o]] = cv_all_train[[o]]
-            DataTest[[o]] = cv_all_test[[o]]
-          }
-          nomOm = paste(omics[, om], collapse = '_')
-          temp = data.frame(omics = nomOm, K = params$K, alpha = params$alpha, t = params$t)
-          temp = cbind(temp, as.data.frame(t(SNF_Pred (DataTrain, DataTest,
-                                                             labTrain, labTest,
-                                                             params, TrueLabs = T)))
-          )
-          if(dim(SNFPredRT)[1] == 0){
-            SNFPredRT = temp
-          }else{
-            SNFPredRT = rbind(SNFPredRT, temp)
-          }
-          cat(paste(nomOm, SNFPredRT[[nomParam]][[nomOm]]['AriTest'], '\n'))
+data_train = readRDS(file = "results/3_FeaturesSelection/data_train.RDS")
+data_test = readRDS(file = "results/3_FeaturesSelection/data_test.RDS")
+cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
+
+final_results_SNF = list()
+for (i in 1:length(data_train)){
+  cv_all_train = list (miRNA = data_train[[i]]$miRNA,
+                       mRNA  = data_train[[i]]$mRNA,
+                       DNAm  = data_train[[i]]$DNAm) 
+  cv_all_test = list (miRNA = data_test[[i]]$miRNA,
+                      mRNA  = data_test[[i]]$mRNA,
+                      DNAm  = data_test[[i]]$DNAm) 
+  
+  labTrain = cov_pooled [cv_all_train$miRNA %>% rownames , "GROUP" ] %>% as.character
+  labTest = cov_pooled [cv_all_test$miRNA %>% rownames , "GROUP" ] %>% as.character
+  
+  SNFPredRT = data.frame()
+  for (t in seq(10, 50, 10)){ #neighbors
+    for (K in seq(10, 60, 10)){ #iterations
+      for (alpha in seq(0.3, 0.8, 0.1)){ #alpha
+        params = list(K = K, alpha = alpha, t = t, Nclust = 2)
+        nomParam = paste('K', K, '_alpha', alpha, '_t', t, sep = '')
+        print(nomParam)
+        nomOm = paste(c('mRNA', 'miRNA', 'DNAm'), collapse = '_')
+        temp = data.frame(omics = nomOm, K = params$K, alpha = params$alpha, t = params$t)
+        temp = cbind(temp, as.data.frame(t(SNF_Pred (cv_all_train, cv_all_test,
+                                                     labTrain, labTest,
+                                                     params, TrueLabs = T)))
+        )
+        if(dim(SNFPredRT)[1] == 0){
+          SNFPredRT = temp
+        }else{
+          SNFPredRT = rbind(SNFPredRT, temp)
         }
+        cat(paste(nomOm, SNFPredRT[[nomParam]][[nomOm]]['AriTest'], '\n'))
       }
     }
   }
+  final_results_SNF[[i]] = SNFPredRT
 }
 
-saveRDS(SNFPredRT, 'results/4_SNFClustering/SNFPredRT.RDS')
+saveRDS(final_results_SNF, 'results/4_SNFClustering/SNFPredRT.RDS')
+
+# Display boxplot of AUC for each CV split in the test sets for the optimal set of parameters
+res     = sapply(final_results_SNF, function(x) x$AucTest)
+res_all = apply(res, 1 , mean)
+
+boxplot(res[which.max(res_all), ], main = "Pooled data - 25 CV split - JDR Method", ylab = "AUC - Test")
+
+
+stripchart(res[which.max(res_all), ],              # Data
+           method = "jitter", # Random noise
+           pch = 19,          # Pch symbols
+           col = 4,           # Color of the symbol
+           vertical = TRUE,   # Vertical mode
+           add = TRUE) 
