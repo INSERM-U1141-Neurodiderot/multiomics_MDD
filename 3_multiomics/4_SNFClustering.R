@@ -125,14 +125,13 @@ for (i in 1:length(data_RGCCA_train)){
   final_results_RGCCA_SNF[[i]] = SNFPredRT
 }
 
-saveRDS(final_results_RGCCA_SNF, 'results/4_SNFClustering/SNFPredRT_filter_10.RDS')
+saveRDS(final_results_RGCCA_SNF, 'results/4_SNFClustering/SNFPredRT.RDS')
 
-res = sapply(final_results_RGCCA_SNF, function(x) x$AucTest)
+# Display boxplot of AUC for each CV split in the test sets for the optimal set of parameters
+res     = sapply(final_results_RGCCA_SNF, function(x) x$AucTest)
 res_all = apply(res, 1 , mean)
 
-plot(res_all)
-  which(res_all == max(res_all))
-boxplot(res[which.max(res_all), ], main = "Pooled data - 25 CV split - RGCCA - 10% probes filtered", ylab = "AUC - Test")
+boxplot(res[which.max(res_all), ], main = "Pooled data - 25 CV split - JDR Method", ylab = "AUC - Test")
 
 
 stripchart(res[which.max(res_all), ],              # Data
