@@ -162,17 +162,7 @@ np = import("numpy")
 CombatModel = import_from_path("neurocombat_sklearn", path = "/env/export/v_home/q_unix/agloague/.virtualenvs/repro_multiomics/lib/python3.8/site-packages")
 neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , Train , Test) {
   Model  = model 
-  
-  if (length(Cov) > 1 ) {    
-    
-    X_train = Model$fit_transform( DataTrain    ,
-                                   array_reshape(CovData [ Train ,  Cov [1] ] , c(-1, 1)) ,
-                                   array_reshape(CovData [ Train ,   Cov [2] ] , c(-1, 1)) )
-    
-    X_test = Model$transform(      DataTest   ,
-                                   array_reshape(CovData [ Test ,  Cov [1] ] , c(-1, 1)) ,
-                                   array_reshape(CovData [ Test ,   Cov [2] ] , c(-1, 1)) )
-  }
+
   if (length(Cov) == 1 ) {    
     
     X_train = Model$fit_transform(DataTrain    ,
@@ -180,6 +170,8 @@ neurocombat_transfert = function(model , DataTrain , DataTest , CovData , Cov , 
     
     X_test = Model$transform(DataTest   ,
                              as.data.frame(as.factor(CovData [ Test ,  Cov ]))) 
+  } else {
+    error("Covariates of length greater than 1 is not dealt with")  
   }
   
   return( list (X_train = X_train , 
