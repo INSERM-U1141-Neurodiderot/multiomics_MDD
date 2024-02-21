@@ -84,18 +84,18 @@ SNF_Pred = function (DataTrain , DataTest , labTrain , labTest , params , TrueLa
 
 ##############################################################################
 
-data_RGCCA_train = readRDS(file = "results/3_FeaturesSelection/data_RGCCA_train_filter_10.RDS")
-data_RGCCA_test = readRDS(file = "results/3_FeaturesSelection/data_RGCCA_test_filter_10.RDS")
+data_train = readRDS(file = "results/3_FeaturesSelection/data_train.RDS")
+data_test = readRDS(file = "results/3_FeaturesSelection/data_test.RDS")
 cov_pooled = readRDS(  file = "data/cov_pooled.RDS")
 
-final_results_RGCCA_SNF = list()
-for (i in 1:length(data_RGCCA_train)){
-  cv_all_train = list (miRNA = data_RGCCA_train[[i]]$miRNA,
-                       mRNA  = data_RGCCA_train[[i]]$mRNA,
-                       DNAm  = data_RGCCA_train[[i]]$DNAm) 
-  cv_all_test = list (miRNA = data_RGCCA_test[[i]]$miRNA,
-                      mRNA  = data_RGCCA_test[[i]]$mRNA,
-                      DNAm  = data_RGCCA_test[[i]]$DNAm) 
+final_results_SNF = list()
+for (i in 1:length(data_train)){
+  cv_all_train = list (miRNA = data_train[[i]]$miRNA,
+                       mRNA  = data_train[[i]]$mRNA,
+                       DNAm  = data_train[[i]]$DNAm) 
+  cv_all_test = list (miRNA = data_test[[i]]$miRNA,
+                      mRNA  = data_test[[i]]$mRNA,
+                      DNAm  = data_test[[i]]$DNAm) 
   
   labTrain = cov_pooled [cv_all_train$miRNA %>% rownames , "GROUP" ] %>% as.character
   labTest = cov_pooled [cv_all_test$miRNA %>% rownames , "GROUP" ] %>% as.character
@@ -122,13 +122,13 @@ for (i in 1:length(data_RGCCA_train)){
       }
     }
   }
-  final_results_RGCCA_SNF[[i]] = SNFPredRT
+  final_results_SNF[[i]] = SNFPredRT
 }
 
-saveRDS(final_results_RGCCA_SNF, 'results/4_SNFClustering/SNFPredRT.RDS')
+saveRDS(final_results_SNF, 'results/4_SNFClustering/SNFPredRT.RDS')
 
 # Display boxplot of AUC for each CV split in the test sets for the optimal set of parameters
-res     = sapply(final_results_RGCCA_SNF, function(x) x$AucTest)
+res     = sapply(final_results_SNF, function(x) x$AucTest)
 res_all = apply(res, 1 , mean)
 
 boxplot(res[which.max(res_all), ], main = "Pooled data - 25 CV split - JDR Method", ylab = "AUC - Test")
