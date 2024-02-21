@@ -1,7 +1,7 @@
 library(dplyr)
 library(RGCCA)
 
-cv_DNAm_corr  = readRDS("results/2_PreProcessing/cv_DNAm_corr_filter_10.RDS")
+cv_DNAm_corr  = readRDS("results/2_PreProcessing/cv_DNAm_corr.RDS")
 cv_miRNA_corr = readRDS("results/2_PreProcessing/cv_miRNA_corr.RDS")
 cv_mRNA_corr  = readRDS("results/2_PreProcessing/cv_mRNA_corr.RDS")
 cov_pooled    = readRDS(file = "data/cov_pooled.RDS")
