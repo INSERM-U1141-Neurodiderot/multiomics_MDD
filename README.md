@@ -1,6 +1,6 @@
 # multiomics_MDD
 
-<!-- [![DOI](https://zenodo.org/ lien à ajouter -->
+[![DOI](https://zenodo.org/badge/696752316.svg)](https://zenodo.org/doi/10.5281/zenodo.10689874)
 
 This repository houses the code used in our study of multiomic peripheral blood biomarkers for Major Depressive Disorder (MDD). We integrated gene expression data with DNA methylation (DNAm) and microRNAs (miRNAs) derived from peripheral blood samples from a well-characterized cohort of individuals with MDD (n=80) and healthy controls (n=89). The raw and processed data are available on GEO with accession number [GSE251786](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE251786) and will be made publically available at the paper acceptance. 
 
