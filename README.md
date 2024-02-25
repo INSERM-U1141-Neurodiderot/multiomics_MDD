@@ -31,9 +31,9 @@ Finally, with the goal of fully leveraging our genome-wide and multiomic data, w
 
 To cite this work please use the reference of the following paper:
 
-+ Formatted citation:
+<!-- + Formatted citation: -->
   
-> Mokhtari et al., (2023). Sex-specific and multiomic integration enhance accuracy of peripheral blood biomarkers of major depressive disorder <!--lien research square à ajouter https://doi -->
+> Sex-specific and multiomic integration enhance accuracy of peripheral blood biomarkers of major depressive disorder ([preprint](https://doi.org/10.21203/rs.3.rs-3978037/v1)) 
 
 <!-- + BibTeX citation: -->
 
