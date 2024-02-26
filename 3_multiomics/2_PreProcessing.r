@@ -243,15 +243,23 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd,
                         corrected_DNAm_test  = b.value.mdd.res) )
 }
 
-input = read.table('GSE251780_Mokhtari_MatrixSignalIntensities.txt', header = T)
+input           = read.table('GSE251780_Mokhtari_MatrixSignalIntensities.txt', header = T)
 rownames(input) = input$cg_ID
-input = input[, colnames(input) != 'cg_ID']
-myNorm.mdd = champ.norm(beta = input, method = "BMIQ", plotBMIQ = T,
-                    arraytype = "EPIC", resultsDir = "ChAMP/Normalisation", cores = 2)
+input           = input[, colnames(input) != 'cg_ID']
+myNorm.mdd      = champ.norm(beta = input, method = "BMIQ", plotBMIQ = F,
+                             arraytype = "EPIC", resultsDir = "ChAMP/Normalisation", cores = 2)
+for (i in 1:dim(myNorm.mdd)[2]){
+  temp = colnames(myNorm.mdd)[i]
+  temp = gsub("[^0-9.-]", "", temp)
+  temp = unlist(str_split(temp, '\\.'))
+  temp = ifelse(temp[2] == '', paste(temp[1], '-1', sep = ''), paste(temp[1], '-', temp[2], sep = ''))
+  colnames(myNorm.mdd)[i] = temp
+}
+
 pd_mdd                = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
 LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
 
-colnames(myNorm.mdd) = rownames(pd_mdd)[match(colnames(myNorm.mdd), pd_mdd$Sample_Name)]
+colnames(myNorm.mdd) = rownames(pd_mdd)[match(colnames(myNorm.mdd), pd_mdd$Sample_ID)]
 myNorm.mdd           = myNorm.mdd[, -which(is.na(colnames(myNorm.mdd)))]
 
 tmp_rownames                    = rownames(pd_mdd)[match(rownames(LeucocyteFraction.mdd), pd_mdd$Sample_Name)]
