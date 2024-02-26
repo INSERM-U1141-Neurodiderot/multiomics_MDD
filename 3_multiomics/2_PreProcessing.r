@@ -243,7 +243,11 @@ correction_DNAm = function(cv_fold, DNAm.npy, i, pd_mdd2, LeucocyteFraction.mdd,
                         corrected_DNAm_test  = b.value.mdd.res) )
 }
 
-myNorm.mdd            = readRDS("TO_SET") # ADD PATH WHERE METHYLATION DATA IS STORED
+input = read.table('GSE251780_Mokhtari_MatrixSignalIntensities.txt', header = T)
+rownames(input) = input$cg_ID
+input = input[, colnames(input) != 'cg_ID']
+myNorm.mdd = champ.norm(beta = input, method = "BMIQ", plotBMIQ = T,
+                    arraytype = "EPIC", resultsDir = "ChAMP/Normalisation", cores = 2)
 pd_mdd                = readRDS("data/pd_mdd.RDS") # pd file containes metadata of samples
 LeucocyteFraction.mdd = readRDS("data/LeucocyteFraction.mdd.RDS") # leucocyte fractions estimation using Houseman method
 
