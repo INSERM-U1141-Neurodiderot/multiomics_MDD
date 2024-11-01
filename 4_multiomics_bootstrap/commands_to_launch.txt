@@ -1,0 +1,41 @@
+. ./01_Resampling.sh pooled BOOTSTRAP 1152
+. ./01_Resampling.sh female BOOTSTRAP 1152
+. ./01_Resampling.sh male BOOTSTRAP 1152
+
+export EXPERIMENT_NAME=BOOTSTRAP_cohort_COHORT_nbsamples_NUMBER_DAY_MONTH_YEAR__HOURS_MINUTES_SECONDS
+
+ccc_msub 02_Preprocessing_mRNA.sh
+ccc_msub 02_Preprocessing_miRNA.sh
+ccc_msub 02_Preprocessing_DNAm.sh T
+
+ccc_msub 02bis_sanity_check.sh
+
+ccc_msub 03_FeatureSelection.sh RGCCA mRNA_miRNA_DNAm
+ccc_msub 03_FeatureSelection.sh RGCCA mRNA_miRNA
+ccc_msub 03_FeatureSelection.sh RGCCA mRNA_DNAm
+ccc_msub 03_FeatureSelection.sh RGCCA miRNA_DNAm
+ccc_msub 03_FeatureSelection.sh RGCCA miRNA
+ccc_msub 03_FeatureSelection.sh RGCCA mRNA
+ccc_msub 03_FeatureSelection.sh RGCCA DNAm
+ccc_msub 03_FeatureSelection.sh JIVE mRNA_miRNA_DNAm
+ccc_msub 03_FeatureSelection.sh JIVE mRNA_miRNA
+ccc_msub 03_FeatureSelection.sh JIVE mRNA_DNAm
+ccc_msub 03_FeatureSelection.sh JIVE miRNA_DNAm
+ccc_msub 03_FeatureSelection.sh JIVE miRNA
+ccc_msub 03_FeatureSelection.sh JIVE mRNA
+ccc_msub 03_FeatureSelection.sh JIVE DNAm
+
+ccc_msub 04_ComputeIntervals.sh RGCCA mRNA_miRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA mRNA_miRNA 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA mRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA miRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA miRNA 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA mRNA 1000
+ccc_msub 04_ComputeIntervals.sh RGCCA DNAm 1000
+ccc_msub 04_ComputeIntervals.sh JIVE mRNA_miRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh JIVE mRNA_miRNA 1000
+ccc_msub 04_ComputeIntervals.sh JIVE mRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh JIVE miRNA_DNAm 1000
+ccc_msub 04_ComputeIntervals.sh JIVE miRNA 1000
+ccc_msub 04_ComputeIntervals.sh JIVE mRNA 1000
+ccc_msub 04_ComputeIntervals.sh JIVE DNAm 1000
