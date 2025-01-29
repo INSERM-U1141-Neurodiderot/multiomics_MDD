@@ -17,8 +17,8 @@ We also provided the processed data and covariates used as input:
 - DNAm processed data ([data_DNAm.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds))
 - DNAm covariates ([LeucocyteFraction.mdd.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/LeucocyteFraction.mdd.RDS))
 - mRNA processed data ([data.mRNA.rds](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/data.mRNA.rds))
-- miRNA covariates ([miR.MDD.raw.renamed.counts.csv](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/miR.MDD.raw.renamed.counts.csv))
-- miRNA processed data ([covMIRNA.mDD.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/covMIRNA.mDD.RDS))
+- miRNA covariates ([covMIRNA.mDD.RDS](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/covMIRNA.mDD.RDS))
+- miRNA processed data ([miR.MDD.raw.renamed.counts.csv](https://github.com/INSERM-U1141-Neurodiderot/multiomics_MDD/blob/main/1_Single_Omics/miR.MDD.raw.renamed.counts.csv))
 
 ## 2- RRHO2
 
